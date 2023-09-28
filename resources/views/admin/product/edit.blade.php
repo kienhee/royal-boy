@@ -1,5 +1,5 @@
 @php
-    $moduleName = 'danh mục';
+    $moduleName = 'bộ sưu tập';
 @endphp
 @extends('layouts.admin.index')
 @section('title', 'Cập nhật ' . $moduleName)
@@ -20,6 +20,13 @@
                         @csrf
                         @method('put')
                         <div class="row">
+                            <div class="mb-3 col-md-12">
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" name="isNew" id="isNew"
+                                        @if ($product->isNew == 1) checked @endif>
+                                    <label class="form-check-label" for="isNew">Sản phẩm mới?</label>
+                                </div>
+                            </div>
 
                             <div class="mb-3 col-md-12">
                                 <div class="upload__box">
@@ -115,7 +122,7 @@
                             </div>
 
                             <div class="mb-3 col-md-6">
-                                <label for="category_id" class="form-label">Danh mục: <span
+                                <label for="category_id" class="form-label">bộ sưu tập: <span
                                         class="text-danger">*</span></label>
                                 <select class="form-select @error('category_id') is-invalid @enderror" name="category_id"
                                     id="category_id">
@@ -204,7 +211,7 @@
                                         class="text-danger">*</span></label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text">$</span>
-                                    <input type="text"name="regular_price"
+                                    <input type="text" name="regular_price"
                                         value="{{ $product->regular_price ?? old('regular_price') }}"
                                         class="form-control" placeholder="0.000">
                                     <span class="input-group-text">VND</span>

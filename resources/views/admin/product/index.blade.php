@@ -22,9 +22,6 @@
                     </div>
                 </div>
 
-
-
-
                 <div class="col-md-6 col-lg-3 mb-2">
                     <select class="form-select" name="status">
                         <option value="">Trạng thái</option>
@@ -36,7 +33,7 @@
                 <div class="col-md-6 col-lg-3 mb-2">
                     <select class="form-select @error('category_id') is-invalid @enderror" name="category_id"
                         id="category_id">
-                        <option value="">Danh mục</option>
+                        <option value="">bộ sưu tập</option>
                         @if (getAllCategories()->count() > 0)
                             @foreach (menuSelect(getAllCategories()) as $category)
                                 <option {{ old('category_id') == $category->id ? 'selected' : '' }}
@@ -73,6 +70,7 @@
                         <th class="px-1 text-center" style="width: 50px">#ID</th>
                         <th class="px-1 text-center" style="width: 50px"></th>
                         <th>Tên sản phẩm</th>
+                        <th class="px-1 text-center" style="width: 130px">Nhãn mới</th>
                         <th class="px-1 text-center" style="width: 130px">Trạng thái</th>
                         <th class="px-1 text-center" style="width: 130px">Số lượng</th>
                         <th style="width: 130px">Ngày tạo</th>
@@ -99,7 +97,10 @@
                                             {{ $item->name }}
                                         </strong>
                                     </a>
-                                    <small>Danh mục: {{ $item->category->name }}</small>
+                                    <small>bộ sưu tập: {{ $item->category->name }}</small>
+                                </td>
+                                <td class="px-0 text-center"><span
+                                        class="badge  me-1 {{ $item->isNew == 1 ? 'bg-label-success ' : ' bg-label-secondary ' }}">{{ $item->isNew == 1 ? 'New' : 'Ẩn' }}</span>
                                 </td>
                                 <td class="px-0 text-center"><span
                                         class="badge  me-1 {{ $item->deleted_at == null ? 'bg-label-success ' : ' bg-label-primary' }}">{{ $item->deleted_at == null ? 'Công khai' : 'Tạm ẩn' }}</span>

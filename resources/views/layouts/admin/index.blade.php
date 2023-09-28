@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default"
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default"
     data-assets-path="{{ asset('admin/assets') }}/" data-template="vertical-menu-template-free">
 
 <head>
@@ -7,7 +7,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>@yield('title', getEnv('APP_NAME_ADMIN')) | Trần Trung Kiên</title>
+    <title>@yield('title', getEnv('APP_NAME_ADMIN')) | CMS</title>
 
     <meta name="description" content="" />
 

@@ -111,7 +111,7 @@ class CategoryController extends Controller
     {
         $CheckProductExists = Product::where('category_id', $id)->get();
         if ($CheckProductExists->count() > 0) {
-            return back()->with('msgError', 'Còn ' . $CheckProductExists->count() . ' sản phẩm trong danh mục , không thể xóa');
+            return back()->with('msgError', 'Còn ' . $CheckProductExists->count() . ' sản phẩm trong bộ sưu tập , không thể xóa');
         }
         $check = Category::onlyTrashed()->where('id', $id)->forceDelete();
         if ($check) {

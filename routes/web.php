@@ -11,8 +11,10 @@ use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\Post\PostController;
 use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Admin\Size\SizeController;
+use App\Http\Controllers\Admin\Slider\SliderController;
 use App\Http\Controllers\Admin\Tag\TagController;
 use App\Http\Controllers\Admin\User\UserController;
+use App\Http\Controllers\Client\ClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,12 +27,21 @@ use App\Http\Controllers\Admin\User\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::prefix('/')->name('client.')->group(function () {
+    Route::get('/', [ClientController::class, 'home'])->name('index');
+    Route::get('/cua-hang', [ClientController::class, 'shop'])->name('shop');
+    Route::get('/cua-hang/{slug}', [ClientController::class, 'productDetail'])->name('product-detail');
+    Route::get('/ve-chung-toi', [ClientController::class, 'about'])->name('about-us');
+    Route::get('/tin-tuc', [ClientController::class, 'blog'])->name('blog');
+    Route::get('/gio-hang', [ClientController::class, 'cart'])->name('shopping-cart');
+    Route::get('/gio-hang/them-vao-gio-hang/{slug}', [ClientController::class, 'addToCart'])->name('add-to-cart');
+    Route::get('/lien-he', [ClientController::class, 'contact'])->name('contact');
+    Route::get('/checkout', [ClientController::class, 'checkout'])->name('checkout');
+    Route::get('/tin-tuc/{slug}', [ClientController::class, 'blogDetail'])->name('blog-detail');
 });
-Route::prefix('/dashboard')->name('dashboard.')->middleware('auth')->group(function () {
+Route::prefix('/admin-dashboard')->name('dashboard.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, "dashboard"])->name('index');
-    // Quản lý danh mục
+    // Quản lý bộ sưu tập
     Route::prefix('categories')->name('category.')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('index');
         Route::get('/add', [categoryController::class, 'add'])->name('add');
@@ -40,6 +51,16 @@ Route::prefix('/dashboard')->name('dashboard.')->middleware('auth')->group(funct
         Route::delete('/soft-delete/{id}', [categoryController::class, 'softDelete'])->name('soft-delete');
         Route::delete('/force-delete/{id}', [categoryController::class, 'forceDelete'])->name('force-delete');
         Route::delete('/restore/{id}', [categoryController::class, 'restore'])->name('restore');
+    });
+    Route::prefix('sliders')->name('slider.')->group(function () {
+        Route::get('/', [SliderController::class, 'index'])->name('index');
+        Route::get('/add', [SliderController::class, 'add'])->name('add');
+        Route::post('/add', [SliderController::class, 'store'])->name('store');
+        Route::get('/edit/{slider}', [SliderController::class, 'edit'])->name('edit');
+        Route::put('/edit/{id}', [SliderController::class, 'update'])->name('update');
+        Route::delete('/soft-delete/{id}', [SliderController::class, 'softDelete'])->name('soft-delete');
+        Route::delete('/force-delete/{id}', [SliderController::class, 'forceDelete'])->name('force-delete');
+        Route::delete('/restore/{id}', [SliderController::class, 'restore'])->name('restore');
     });
     Route::prefix('products')->name('product.')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');

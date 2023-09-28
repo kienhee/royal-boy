@@ -30,6 +30,7 @@ return new class extends Migration
             $table->boolean('is_Price_includes_taxes')->default(false);
             $table->tinyInteger('sale')->nullable();
             $table->boolean('isPublish')->default(true);
+            $table->boolean('isNew')->default(false);
             $table->softDeletes();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();

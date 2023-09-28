@@ -44,20 +44,11 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
-        if ($request->has('is_Price_includes_taxes')) {
-            $request['is_Price_includes_taxes'] = 1;
-        } else {
-            $request['is_Price_includes_taxes'] = 0;
-        }
-        if ($request->tax == null) {
-            $request['tax'] = 0;
-        }
-
 
         $validate = $request->validate([
             "name" => "required|max:255|unique:products,name",
             "slug" => "required|unique:products,slug",
-            "description" => "required",
+            "description" => "required|max:255",
             "content" => "required",
             "product_code" => "",
             "product_sku" => "",
@@ -92,13 +83,26 @@ class ProductController extends Controller
             "sale.numeric" => "Giá trị phải là số!",
             "tax.numeric" => "Giá trị phải là số!",
             "name.max" => "Tối đa :max kí tự",
+            "description.max" => "Tối đa :max kí tự",
             "sale.max_digits" => "Tối đa :max_digits số",
             "tax.max_digits" => "Tối đa :max_digits số",
             "name.unique" => "Tên này đã được sử dụng",
             "slug.unique" => "Đường dẫn này đã được sử dụng",
 
         ]);
-
+        if ($request->has('is_Price_includes_taxes')) {
+            $validate['is_Price_includes_taxes'] = 1;
+        } else {
+            $validate['is_Price_includes_taxes'] = 0;
+        }
+        if ($request->has('isNew')) {
+            $validate['isNew'] = 1;
+        } else {
+            $validate['isNew'] = 0;
+        }
+        if ($request->tax == null) {
+            $validate['tax'] = 0;
+        }
         $check = Product::insert($validate);
         if ($check) {
             return back()->with('msgSuccess', 'Thêm thành công');
@@ -112,20 +116,13 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
 
-        if ($request->has('is_Price_includes_taxes')) {
-            $request['is_Price_includes_taxes'] = 1;
-        } else {
-            $request['is_Price_includes_taxes'] = 0;
-        }
-        if ($request->tax == null) {
-            $request['tax'] = 0;
-        }
+
 
 
         $validate = $request->validate([
             "name" => "required|max:255|unique:products,name," . $id,
             "slug" => "required|unique:products,slug," . $id,
-            "description" => "required",
+            "description" => "required|max:255",
             "content" => "required",
             "product_code" => "",
             "product_sku" => "",
@@ -160,12 +157,27 @@ class ProductController extends Controller
             "sale.numeric" => "Giá trị phải là số!",
             "tax.numeric" => "Giá trị phải là số!",
             "name.max" => "Tối đa :max kí tự",
+            "description.max" => "Tối đa :max kí tự",
             "sale.max_digits" => "Tối đa :max_digits số",
             "tax.max_digits" => "Tối đa :max_digits số",
             "name.unique" => "Tên này đã được sử dụng",
             "slug.unique" => "Đường dẫn này đã được sử dụng",
 
         ]);
+        if ($request->has('is_Price_includes_taxes')) {
+            $validate['is_Price_includes_taxes'] = 1;
+        } else {
+            $validate['is_Price_includes_taxes'] = 0;
+        }
+        if ($request->has('isNew')) {
+            $validate['isNew'] = 1;
+        } else {
+            $validate['isNew'] = 0;
+        }
+        if ($request->tax == null) {
+            $validate['tax'] = 0;
+        }
+
         $check = Product::where('id', $id)->update($validate);
         if ($check) {
             return back()->with('msgSuccess', 'Cập nhật thành công');

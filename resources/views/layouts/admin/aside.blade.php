@@ -16,14 +16,26 @@
             'children' => [],
         ],
         [
-            'name' => 'Quản lý danh mục',
+            'name' => 'Quản lý bộ sưu tập',
             'classIcon' => 'menu-icon tf-icons bx bx-category',
             'route' => '#',
-            'children' => [['name' => 'Thêm mới danh mục', 'route' => 'dashboard.category.add'], ['name' => 'Danh sách danh mục', 'route' => 'dashboard.category.index']],
+            'children' => [['name' => 'Thêm mới bộ sưu tập', 'route' => 'dashboard.category.add'], ['name' => 'Danh sách bộ sưu tập', 'route' => 'dashboard.category.index']],
+        ],
+        [
+            'name' => 'Quản lý slider',
+            'classIcon' => 'menu-icon tf-icons bx bx-slider-alt',
+            'route' => '#',
+            'children' => [['name' => 'Thêm mới slider', 'route' => 'dashboard.slider.add'], ['name' => 'Danh sách slider', 'route' => 'dashboard.slider.index']],
         ],
         [
             'name' => 'Quản lý sản phẩm',
             'classIcon' => 'menu-icon tf-icons bx bx-package',
+            'route' => '#',
+            'children' => [['name' => 'Danh sách sản phẩm', 'route' => 'dashboard.product.index'], ['name' => 'Thêm mới sản phẩm', 'route' => 'dashboard.product.add'], ['name' => 'Bảng màu', 'route' => 'dashboard.color.index'], ['name' => 'Kích thước', 'route' => 'dashboard.size.index']],
+        ],
+        [
+            'name' => 'Đơn hàng',
+            'classIcon' => 'menu-icon tf-icons bx bxs-cart-alt',
             'route' => '#',
             'children' => [['name' => 'Danh sách sản phẩm', 'route' => 'dashboard.product.index'], ['name' => 'Thêm mới sản phẩm', 'route' => 'dashboard.product.add'], ['name' => 'Bảng màu', 'route' => 'dashboard.color.index'], ['name' => 'Kích thước', 'route' => 'dashboard.size.index']],
         ],
