@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Group\GroupController;
 use App\Http\Controllers\Admin\ImageController;
+use App\Http\Controllers\Admin\Order\OrderController;
 use App\Http\Controllers\Admin\Post\PostController;
 use App\Http\Controllers\Admin\Product\ProductController;
 use App\Http\Controllers\Admin\Size\SizeController;
@@ -26,7 +27,7 @@ use App\Http\Controllers\Client\ClientController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+// client
 Route::prefix('/')->name('client.')->group(function () {
     Route::get('/', [ClientController::class, 'home'])->name('index');
     Route::get('/shop', [ClientController::class, 'shop'])->name('shop');
@@ -42,6 +43,7 @@ Route::prefix('/')->name('client.')->group(function () {
     Route::get('/checkout', [ClientController::class, 'checkout'])->name('checkout');
     Route::get('/blog/{slug}', [ClientController::class, 'blogDetail'])->name('blog-detail');
 });
+// admin
 Route::prefix('/admin-dashboard')->name('dashboard.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, "dashboard"])->name('index');
     // Quản lý bộ sưu tập
@@ -100,6 +102,14 @@ Route::prefix('/admin-dashboard')->name('dashboard.')->middleware('auth')->group
         Route::get('/edit/{size}', [SizeController::class, 'edit'])->name('edit');
         Route::put('/edit/{id}', [SizeController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [SizeController::class, 'delete'])->name('delete');
+    });
+    Route::prefix('orders')->name('order.')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('index');
+        Route::get('/add', [OrderController::class, 'add'])->name('add');
+        Route::post('/add', [OrderController::class, 'store'])->name('store');
+        Route::get('/edit/{size}', [OrderController::class, 'edit'])->name('edit');
+        Route::put('/edit/{id}', [OrderController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [OrderController::class, 'delete'])->name('delete');
     });
     Route::prefix('tags')->name('tag.')->group(function () {
         Route::get('/', [TagController::class, 'index'])->name('index');

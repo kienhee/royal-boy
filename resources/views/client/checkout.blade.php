@@ -32,49 +32,56 @@
 
                             <div class="checkout__input">
                                 <p>Full Name<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Country<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Address<span>*</span></p>
-                                <input type="text" placeholder="Street Address" class="checkout__input__add">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Town/City<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Country/State<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Postcode / ZIP<span>*</span></p>
-                                <input type="text">
+                                <input type="text" id="fullname" class="mb-2">
+                                <p class="text-danger mb-3" id="fullname-err"></p>
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Phone<span>*</span></p>
-                                        <input type="text">
+                                        <input type="text" id="phone" class="mb-2">
+                                        <p class="text-danger mb-3" id="phone-err"></p>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Email<span>*</span></p>
-                                        <input type="text">
+                                        <input type="email" id="email" class="mb-2">
+                                        <p class="text-danger mb-3" id="email-err"></p>
                                     </div>
                                 </div>
                             </div>
-
-
-
                             <div class="checkout__input">
-                                <p>Order notes<span>*</span></p>
-                                <input type="text"
-                                    placeholder="Notes about your order, e.g. special notes for delivery.">
+                                <p>Country<span>*</span></p>
+                                <input type="text" id="country" class="mb-2">
+                                <p class="text-danger mb-3" id="country-err"></p>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Address<span>*</span></p>
+                                <input type="text" placeholder="Street Address" class="mb-2" id="address">
+                                <p class="text-danger mb-3" id="address-err">
+
+                                </p>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Town/City<span>*</span></p>
+                                <input type="text" id="townCity" class="mb-2">
+                                <p class="text-danger mb-3" id="townCity-err"></p>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Country/State<span>*</span></p>
+                                <input type="text" id="countryState" class="mb-2">
+                                <p class="text-danger mb-3" id="countryState-err"></p>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Postcode / ZIP<span>*</span></p>
+                                <input type="text" id="postcodeZIP" class="mb-2">
+                                <p class="text-danger mb-3" id="postcodeZIP-err"></p>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Order notes</p>
+                                <input type="text" placeholder="Notes about your order, e.g. special notes for delivery."
+                                    id="notes">
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6">
@@ -97,7 +104,7 @@
                                 </div>
 
 
-                                <button type="submit" class="site-btn">PLACE ORDER</button>
+                                <button type="submit" class="site-btn" id="place_order">PLACE ORDER</button>
                             </div>
                         </div>
                     </div>

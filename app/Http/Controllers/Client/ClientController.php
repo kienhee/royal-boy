@@ -129,6 +129,9 @@ class ClientController extends Controller
     {
         return view('client.checkout');
     }
+    public function order(Request $request)
+    {
+    }
     public function contact()
     {
         return view('client.contact');

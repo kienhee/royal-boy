@@ -37,7 +37,7 @@
             'name' => 'Đơn hàng',
             'classIcon' => 'menu-icon tf-icons bx bxs-cart-alt',
             'route' => '#',
-            'children' => [['name' => 'Danh sách sản phẩm', 'route' => 'dashboard.product.index'], ['name' => 'Thêm mới sản phẩm', 'route' => 'dashboard.product.add'], ['name' => 'Bảng màu', 'route' => 'dashboard.color.index'], ['name' => 'Kích thước', 'route' => 'dashboard.size.index']],
+            'children' => [['name' => 'Tất cả đơn hàng', 'route' => 'dashboard.order.index']],
         ],
         [
             'name' => 'Quản lý bài viết',

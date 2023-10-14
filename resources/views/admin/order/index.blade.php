@@ -1,11 +1,11 @@
 @php
-    $moduleName = 'đơn hàng';
+    $moduleName = 'sản phẩm';
 @endphp
 @extends('layouts.admin.index')
 @section('title', 'Quản lý ' . $moduleName)
 
 @section('content')
-    <x-breadcrumb parentName="Quản lý {{ $moduleName }}" parentLink="dashboard.order.index"
+    <x-breadcrumb parentName="Quản lý {{ $moduleName }}" parentLink="dashboard.product.index"
         childrenName="Danh sách {{ $moduleName }}" />
     <div class="card">
         <x-alert />
@@ -68,28 +68,24 @@
                 <thead>
                     <tr>
                         <th class="px-1 text-center" style="width: 50px">#ID</th>
-                        <th class="px-1 text-center" style="width: 50px"></th>
-                        <th>Tên sản phẩm</th>
-                        <th class="px-1 text-center" style="width: 130px">Nhãn mới</th>
-                        <th class="px-1 text-center" style="width: 130px">Trạng thái</th>
+                        <th>Khách hàng</th>
+                        <th class="px-1 text-center" style="width: 130px">Tổng giá</th>
                         <th class="px-1 text-center" style="width: 130px">Số lượng</th>
-                        <th style="width: 130px">Ngày tạo</th>
+                        <th style="width: 130px">Ngày đặt</th>
+                        <th class="px-1 text-center" style="width: 130px">Trạng thái</th>
                         <th class="px-1 text-center" style="width: 130px">Cài đặt</th>
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    @if ($products->count() > 0)
-                        @foreach ($products as $item)
+                    @if ($orders->count() > 0)
+                        @foreach ($orders as $item)
                             <tr>
                                 <td class="px-0 text-center">
                                     <a href="{{ route('dashboard.product.edit', $item->id) }}" title="Click xem thêm"
-                                        style="color: inherit"><strong>{{ $item->id }}</strong>
+                                        style="color: inherit"><strong>#{{ $item->id }}</strong>
                                     </a>
                                 </td>
-                                <td class="px-0 text-center">
-                                    <img src="{{ explode(',', $item->images)[0] ?? '' }}" alt="Ảnh"
-                                        class=" object-fit-cover border rounded w-px-40 h-px-40">
-                                </td>
+
                                 <td>
                                     <a href="{{ route('dashboard.product.edit', $item->id) }}" style="color: inherit    "
                                         title="Click xem thêm" class="d-block">
@@ -97,23 +93,29 @@
                                             {{ $item->name }}
                                         </strong>
                                     </a>
-                                    <small>bộ sưu tập: {{ $item->category->name }}</small>
+                                    <small>Email: {{ $item->email }} </small><br>
+                                    <small>SDT: {{ $item->phone }}</small>
                                 </td>
                                 <td class="px-0 text-center">
-                                    <span
-                                        class="badge  me-1 {{ $item->isNew == 1 ? 'bg-label-success ' : ' bg-label-secondary ' }}">{{ $item->isNew == 1 ? 'New' : 'Ẩn' }}</span>
+                                    {{ number_format($item->total) }}đ
                                 </td>
-                                <td class="px-0 text-center"><span
-                                        class="badge  me-1 {{ $item->deleted_at == null ? 'bg-label-success ' : ' bg-label-primary' }}">{{ $item->deleted_at == null ? 'Công khai' : 'Tạm ẩn' }}</span>
+                                <td class="px-0 text-center">
+                                    x{{ $item->quantity }}
                                 </td>
-                                <td class="text-center px-0">
-                                    {{ $item->quantity }}
-                                </td>
+
                                 <td>
                                     <p class="m-0">{{ $item->created_at->format('d M Y') }}</p>
                                     <small>{{ $item->created_at->format('h:i A') }}</small>
                                 </td>
-
+                                <td class="text-center px-0">
+                                    @if ($item->status == 1)
+                                        <span class="badge bg-label-warning me-1">Pending</span>
+                                    @elseif($item->status == 2)
+                                        <span class="badge bg-label-success me-1">Completed</span>
+                                    @else
+                                        <span class="badge bg-label-primary me-1">Refunded</span>
+                                    @endif
+                                </td>
                                 <td class="px-0 text-center">
                                     <div class="dropdown">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -127,7 +129,7 @@
                                                 Xem thêm</a>
 
 
-                                            @if ($item->trashed() == 1)
+                                            {{-- @if ($item->trashed() == 1)
                                                 <form class="dropdown-item"
                                                     action="{{ route('dashboard.product.restore', $item->id) }}"
                                                     method="POST">
@@ -138,8 +140,8 @@
                                                         Khôi phục hoạt động
                                                     </button>
                                                 </form>
-                                            @endif
-                                            <form class="dropdown-item"
+                                            @endif --}}
+                                            {{-- <form class="dropdown-item"
                                                 action="{{ $item->trashed() ? route('dashboard.product.force-delete', $item->id) : route('dashboard.product.soft-delete', $item->id) }}"
                                                 method="POST"
                                                 @if ($item->trashed()) onsubmit="return confirm('Bạn chắc chắn muốn xóa vĩnh viễn?')" @endif>
@@ -150,7 +152,7 @@
                                                         class="bx {{ $item->trashed() ? 'bx-trash' : 'bx bxs-hand' }}  me-1"></i>
                                                     {{ $item->trashed() ? 'Xóa vĩnh viễn' : 'Tạm ngưng hoạt động' }}
                                                 </button>
-                                            </form>
+                                            </form> --}}
 
 
                                         </div>
@@ -165,12 +167,11 @@
 
                     @endif
 
-
                 </tbody>
             </table>
         </div>
         <div class="mx-3 mt-3">
-            {{ $products->withQueryString()->links() }}
+            {{-- {{ $products->withQueryString()->links() }} --}}
         </div>
     </div>
 @endsection
