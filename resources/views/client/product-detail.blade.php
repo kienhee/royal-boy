@@ -9,12 +9,17 @@
                         <div class="product__details__breadcrumb">
                             <a href="{{ route('client.index') }}">Home</a>
                             <a href="{{ route('client.shop') }}">Shop</a>
-                            <span>Product Details</span>
+                            <span>{{ $product->name }}</span>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-3 col-md-3">
+                        <input type="hidden" value="{{ explode(',', $product->images)[0] }}" id="cover">
+                        <input type="hidden" value="{{ $product->slug }}" id="slug">
+                        <input type="hidden"
+                            value="@if ((int) $product->sale > 0) {{ ((100 - $product->sale) / 100) * $product->regular_price }} @else{{ $product->regular_price }} @endif"
+                            id="price">
                         <ul class="nav nav-tabs" role="tablist">
                             @foreach (explode(',', $product->images) as $key => $item)
                                 <li class="nav-item ">
@@ -58,23 +63,36 @@
                                 <i class="fa fa-star-o"></i>
                                 <span> - 5 Reviews</span>
                             </div>
-                            <h3>{{ number_format($product->regular_price) }} VND<span>70.00</span></h3>
+                            @if ((int) $product->sale > 0)
+                                <h3 style="color: #e53637" class="mb-1">
+                                    {{ number_format(((100 - $product->sale) / 100) * $product->regular_price) }}đ
+                                </h3>
+                                <h5 class="mb-3"><del class="text-muted ">{{ number_format($product->regular_price) }}đ
+                                    </del></h5>
+                            @else
+                                <h3 style="color: #e53637">
+                                    {{ number_format($product->regular_price) }}đ
+                                </h3>
+                            @endif
                             <p>{{ $product->description }}</p>
                             <div class="product__details__option">
                                 <div class="product__details__option__size">
-                                    <span>Size:</span>
-                                    @foreach (explode(',', $product->sizes) as $size)
-                                        <label for="{{ $size }}">{{ $size }}
-                                            <input type="radio" id="{{ $size }}">
+                                    <span>Sizes:</span>
+                                    @foreach (explode(',', $product->sizes) as $key => $size)
+                                        <label for="{{ $size }}"
+                                            class="@if ($key == 0) active @endif">{{ $size }}
+                                            <input type="radio" id="{{ $size }}" name="size"
+                                                value="{{ $size }}"
+                                                @if ($key == 0) @checked(true) @endif>
+
                                         </label>
                                     @endforeach
-
-
                                 </div>
                                 <div class="product__details__option__color">
-                                    <span>Màu sắc:</span>
-                                    @foreach (explode(',', $product->colors) as $color)
+                                    <span>Colors:</span>
+                                    @foreach (explode(',', $product->colors) as $key => $color)
                                         <input type="radio" class="option__color" id="{{ $color }}" name="color"
+                                            @if ($key == 0) @checked(true) @endif
                                             value="{{ $color }}">
                                         <label for="{{ $color }}" title="{{ explode('-', $color)[0] }}"
                                             style="background: {{ explode('-', $color)[1] }}">
@@ -88,17 +106,15 @@
                             <div class="product__details__cart__option">
                                 <div class="quantity">
                                     <div class="pro-qty">
-                                        <input type="text" value="1">
+                                        <input type="text" value="1" id="product_quantity">
                                     </div>
                                 </div>
-                                <button data-url="{{ route('client.add-to-cart', $product->slug) }}"
-                                    class="primary-btn add-to-cart">Thêm vào
-                                    giỏ
-                                    hàng</button>
+                                <button data-product={{ $product->id }} class="primary-btn add-to-cart">Add to
+                                    cart</button>
                             </div>
 
                             <div class="product__details__last__option">
-                                <h5><span>Đảm bảo thanh toán an toàn</span></h5>
+                                <h5><span>Guaranteed Safe Checkout</span></h5>
                                 <img src="{{ asset('client') }}/img/shop-details/details-payment.png" alt="">
                                 <ul>
                                     <li><span>SKU:</span> 3812912</li>
@@ -113,10 +129,19 @@
                         <div class="product__details__tab">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5" role="tab">Mô tả sản
-                                        phẩm</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5" role="tab"
+                                        aria-selected="false">Description</a>
                                 </li>
-
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab"
+                                        aria-selected="false">Customer
+                                        Previews(5)</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " data-toggle="tab" href="#tabs-7" role="tab"
+                                        aria-selected="true">Additional
+                                        information</a>
+                                </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tabs-5" role="tabpanel">
@@ -124,7 +149,70 @@
                                         {!! $product->content !!}
                                     </div>
                                 </div>
-
+                                <div class="tab-pane" id="tabs-6" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Products Infomation</h5>
+                                            <p>A Pocket PC is a handheld computer, which features many of the same
+                                                capabilities as a modern PC. These handy little devices allow
+                                                individuals to retrieve and store e-mail messages, create a contact
+                                                file, coordinate appointments, surf the internet, exchange text messages
+                                                and more. Every product that is labeled as a Pocket PC must be
+                                                accompanied with specific software to operate the unit and must feature
+                                                a touchscreen and touchpad.</p>
+                                            <p>As is the case with any new technology product, the cost of a Pocket PC
+                                                was substantial during it’s early release. For approximately $700.00,
+                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
+                                                These days, customers are finding that prices have become much more
+                                                reasonable now that the newness is wearing off. For approximately
+                                                $350.00, a new Pocket PC can now be purchased.</p>
+                                        </div>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Material used</h5>
+                                            <p>Polyester is deemed lower quality due to its none natural quality’s. Made
+                                                from synthetic materials, not natural like wool. Polyester suits become
+                                                creased easily and are known for not being breathable. Polyester suits
+                                                tend to have a shine to them compared to wool and cotton suits, this can
+                                                make the suit look cheap. The texture of velvet is luxurious and
+                                                breathable. Velvet is a great choice for dinner party jacket and can be
+                                                worn all year round.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane " id="tabs-7" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <p class="note">Nam tempus turpis at metus scelerisque placerat nulla deumantos
+                                            solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
+                                            ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
+                                            pharetras loremos.</p>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Products Infomation</h5>
+                                            <p>A Pocket PC is a handheld computer, which features many of the same
+                                                capabilities as a modern PC. These handy little devices allow
+                                                individuals to retrieve and store e-mail messages, create a contact
+                                                file, coordinate appointments, surf the internet, exchange text messages
+                                                and more. Every product that is labeled as a Pocket PC must be
+                                                accompanied with specific software to operate the unit and must feature
+                                                a touchscreen and touchpad.</p>
+                                            <p>As is the case with any new technology product, the cost of a Pocket PC
+                                                was substantial during it’s early release. For approximately $700.00,
+                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
+                                                These days, customers are finding that prices have become much more
+                                                reasonable now that the newness is wearing off. For approximately
+                                                $350.00, a new Pocket PC can now be purchased.</p>
+                                        </div>
+                                        <div class="product__details__tab__content__item">
+                                            <h5>Material used</h5>
+                                            <p>Polyester is deemed lower quality due to its none natural quality’s. Made
+                                                from synthetic materials, not natural like wool. Polyester suits become
+                                                creased easily and are known for not being breathable. Polyester suits
+                                                tend to have a shine to them compared to wool and cotton suits, this can
+                                                make the suit look cheap. The texture of velvet is luxurious and
+                                                breathable. Velvet is a great choice for dinner party jacket and can be
+                                                worn all year round.</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -139,7 +227,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="related-title">Sản phẩm liên quan</h3>
+                    <h3 class="related-title">Related Product</h3>
                 </div>
             </div>
             <div class="row">
@@ -165,7 +253,7 @@
                                     <i class="fa fa-star-o"></i>
                                     <i class="fa fa-star-o"></i>
                                 </div>
-
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 @if ((int) $product->sale > 0)
                                     <h5 style="color: #e53637">
                                         {{ number_format(((100 - $product->sale) / 100) * $product->regular_price) }}đ
@@ -185,5 +273,18 @@
             </div>
         </div>
     </section>
+    <!-- Modal -->
+    <div class="modal fade" id="modal-susccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered ">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-center align-items-center gap-3 flex-column text-center">
+                    <img src="{{ asset('images/icon-success.png') }}" width="50" height="50" class="mb-4"
+                        alt="">
+                    <p style="font-size: 20px;"> The product has been added to cart</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <!-- Related Section End -->
 @endsection

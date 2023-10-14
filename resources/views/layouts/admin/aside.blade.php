@@ -16,10 +16,10 @@
             'children' => [],
         ],
         [
-            'name' => 'Quản lý bộ sưu tập',
+            'name' => 'Quản lý danh mục',
             'classIcon' => 'menu-icon tf-icons bx bx-category',
             'route' => '#',
-            'children' => [['name' => 'Thêm mới bộ sưu tập', 'route' => 'dashboard.category.add'], ['name' => 'Danh sách bộ sưu tập', 'route' => 'dashboard.category.index']],
+            'children' => [['name' => 'Thêm mới danh mục', 'route' => 'dashboard.category.add'], ['name' => 'Danh sách danh mục', 'route' => 'dashboard.category.index']],
         ],
         [
             'name' => 'Quản lý slider',
@@ -89,7 +89,7 @@
                 ['name' => 'Carousel', 'route' => 'dashboard.templates.components.carousel'],
                 ['name' => 'Collapse', 'route' => 'dashboard.templates.components.collapse'],
                 ['name' => 'Dropdowns', 'route' => 'dashboard.templates.components.dropdowns'],
-    
+
                 ['name' => 'Footer', 'route' => 'dashboard.templates.components.footer'],
                 ['name' => 'List groups', 'route' => 'dashboard.templates.components.list-groups'],
                 ['name' => 'Modals', 'route' => 'dashboard.templates.components.modals'],
@@ -97,16 +97,16 @@
                 ['name' => 'Offcanvas', 'route' => 'dashboard.templates.components.offcanvas'],
                 ['name' => 'Pagination & Breadcrumbs', 'route' => 'dashboard.templates.components.pagination-breadcrumbs'],
                 ['name' => 'Progress', 'route' => 'dashboard.templates.components.progress'],
-    
+
                 ['name' => 'Spinners', 'route' => 'dashboard.templates.components.spinners'],
                 ['name' => 'Tabs & Pills', 'route' => 'dashboard.templates.components.tabs-pills'],
                 ['name' => 'Toasts', 'route' => 'dashboard.templates.components.toasts'],
                 ['name' => 'Tooltips & popovers', 'route' => 'dashboard.templates.components.tooltips-popovers'],
-    
+
                 ['name' => 'Typography', 'route' => 'dashboard.templates.components.typography'],
             ],
         ],
-    
+
         [
             'name' => 'Boxicons',
             'classIcon' => 'menu-icon tf-icons bx bx-crown',
@@ -144,7 +144,7 @@
             'children' => [],
         ],
     ];
-    
+
 @endphp
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">

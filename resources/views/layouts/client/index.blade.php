@@ -7,6 +7,7 @@
     <meta name="keywords" content="Male_Fashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>Male-Fashion | Template</title>
 
     <!-- Google Font -->
@@ -21,8 +22,11 @@
     <link rel="stylesheet" href="{{ asset('client') }}/css/nice-select.css" type="text/css">
     <link rel="stylesheet" href="{{ asset('client') }}/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="{{ asset('client') }}/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('client') }}/slick-slider/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('client') }}/slick-slider/slick/slick-theme.css" />
     <link rel="stylesheet" href="{{ asset('client') }}/css/style.css" type="text/css">
     <script src="https://unpkg.com/ionicons@latest/dist/ionicons.js"></script>
+
 </head>
 
 <body>
@@ -58,26 +62,9 @@
     <script src="{{ asset('client') }}/js/jquery.slicknav.js"></script>
     <script src="{{ asset('client') }}/js/mixitup.min.js"></script>
     <script src="{{ asset('client') }}/js/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="{{ asset('client') }}/slick-slider/slick/slick.min.js"></script>
     <script src="{{ asset('client') }}/js/main.js"></script>
-    <script>
-        function addToCart() {
-            let urlProduct = $(this).data('url');
-            $.ajax({
-                type: 'get',
-                url: urlProduct,
-                dataType: 'json',
-                success: function(data) {
 
-                },
-                error: function(data) {
-
-                },
-            })
-        }
-        $(function() {
-            $('.add-to-cart').on('click', addToCart)
-        })
-    </script>
 </body>
 
 </html>

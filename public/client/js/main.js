@@ -50,8 +50,8 @@
     });
 
     /*------------------
-		Navigation
-	--------------------*/
+        Navigation
+    --------------------*/
     $(".mobile-menu").slicknav({
         prependTo: "#mobile-menu-wrap",
         allowParentLinks: true,
@@ -106,8 +106,8 @@
     $("select").niceSelect();
 
     /*-------------------
-		Radio Btn
-	--------------------- */
+        Radio Btn
+    --------------------- */
     $(
         ".product__color__select label, .shop__sidebar__size label, .product__details__option__size label"
     ).on("click", function () {
@@ -118,8 +118,8 @@
     });
 
     /*-------------------
-		Scroll
-	--------------------- */
+        Scroll
+    --------------------- */
     $(".nice-scroll").niceScroll({
         cursorcolor: "#0d0d0d",
         cursorwidth: "5px",
@@ -164,41 +164,22 @@
     });
 
     /*------------------
-		Magnific
-	--------------------*/
+        Magnific
+    --------------------*/
     $(".video-popup").magnificPopup({
         type: "iframe",
     });
 
     /*-------------------
-		Quantity change
-	--------------------- */
+        Quantity change
+    --------------------- */
     var proQty = $(".pro-qty");
     proQty.prepend('<span class="fa fa-angle-up dec qtybtn"></span>');
     proQty.append('<span class="fa fa-angle-down inc qtybtn"></span>');
     proQty.on("click", ".qtybtn", function () {
         var $button = $(this);
         var oldValue = $button.parent().find("input").val();
-        if ($button.hasClass("inc")) {
-            var newVal = parseFloat(oldValue) + 1;
-        } else {
-            // Don't allow decrementing below zero
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 0;
-            }
-        }
-        $button.parent().find("input").val(newVal);
-    });
-
-    var proQty = $(".pro-qty-2");
-    proQty.prepend('<span class="fa fa-angle-left dec qtybtn"></span>');
-    proQty.append('<span class="fa fa-angle-right inc qtybtn"></span>');
-    proQty.on("click", ".qtybtn", function () {
-        var $button = $(this);
-        var oldValue = $button.parent().find("input").val();
-        if ($button.hasClass("inc")) {
+        if ($button.hasClass("dec")) {
             var newVal = parseFloat(oldValue) + 1;
         } else {
             // Don't allow decrementing below zero
@@ -229,5 +210,228 @@
                     },
                 }
             );
+    });
+
+    function getCart() {
+        let lengthCart = $("#lengthCart");
+        $.ajax({
+            type: "get",
+            url: "/get-cart",
+            success: function (cart) {
+                if (typeof cart == "object") {
+                    cart = Object.values(cart);
+                }
+                lengthCart.text(Object.keys(cart).length);
+                let html = "";
+                if (cart.length > 0) {
+                    // handle show
+                    cart.forEach((item) => {
+                        html += ` <tr>
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__pic">
+                                            <img src="${item.cover}" alt="${
+                            item.name
+                        }" width="90" height="90">
+                                        </div>
+                                         <div class="product__cart__item__text">
+                                           <h5 class="mb-1"><a href="/cua-hang/${
+                                               item.slug
+                                           }" style="color:inherit">${
+                            item.name
+                        }</a></h5>
+                        
+                                            <h6 style="color: #e53637" class="mb-1">${new Intl.NumberFormat(
+                                                "vi-VN",
+                                                {
+                                                    style: "currency",
+                                                    currency: "VND",
+                                                }
+                                            ).format(item.price)}</h6>
+                                            <small class="text-muted">Size: ${
+                                                item.size
+                                            } - Màu: ${
+                            item.color.split("-")[0]
+                        }</small>
+                                        </div>
+                                    </td>
+                                    <td class="quantity__item">
+                                        <div class="quantity">
+                                            <div class="pro-qty-2">
+                                                <input type="text" name="quantity" value="${
+                                                    item.quantity
+                                                }">
+                                                <input type="hidden" value="${
+                                                    item.price
+                                                }"                              >
+                                                <input type="hidden" name="cart__price-uuid" value="${
+                                                    item.uuid
+                                                }"                              >
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price" id="cart__price-${
+                                        item.uuid
+                                    }">${new Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                        }).format(item.price * item.quantity)}</td>
+                                    <td class="cart__close"><button class="btn btn-remove-cart">
+                                      <input type="hidden" name="cart__price-uuid" value="${
+                                          item.uuid
+                                      }"                              >
+                                    <i class="fa fa-close" ></i></button></td>
+                                </tr>`;
+                    });
+                    // hanlde inc dec
+                    $("#cart-list").html(html);
+                    var proQty2 = $(".pro-qty-2");
+                    proQty2.prepend(
+                        '<span class="fa fa-angle-left dec qtybtn"></span>'
+                    );
+                    proQty2.append(
+                        '<span class="fa fa-angle-right inc qtybtn"></span>'
+                    );
+
+                    proQty2.on("click", ".qtybtn", function () {
+                        var $button = $(this);
+                        var oldValue = $button
+                            .parent()
+                            .find("input[name='quantity']")
+                            .val();
+                        let cartPriceUUID = $button
+                            .parent()
+                            .find("input[name='cart__price-uuid']")
+                            .val();
+                        let price = $button
+                            .parent()
+                            .find("input[type='hidden']")
+                            .val();
+                        let cartPrice = $(`#cart__price-${cartPriceUUID}`);
+                        let findIndexItemCart = cart.findIndex(
+                            (item) => item.uuid == cartPriceUUID
+                        );
+                        if ($button.hasClass("inc")) {
+                            var newVal = parseFloat(oldValue) + 1;
+                            cart[findIndexItemCart].quantity++;
+                        } else {
+                            // Don't allow decrementing below zero
+                            if (oldValue > 0) {
+                                var newVal = parseFloat(oldValue) - 1;
+                                cart[findIndexItemCart].quantity--;
+                            } else {
+                                newVal = 0;
+                            }
+                        }
+
+                        $button
+                            .parent()
+                            .find("input[name='quantity']")
+                            .val(newVal);
+                        cartPrice.text(
+                            new Intl.NumberFormat("vi-VN", {
+                                style: "currency",
+                                currency: "VND",
+                            }).format(newVal * price)
+                        );
+                    });
+
+                    let cartTotal = $("#cart__total");
+                    let total = cart.reduce((total, item) => {
+                        return total + Math.round(item.quantity * item.price);
+                    }, 0);
+                    cartTotal.text(
+                        new Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                        }).format(total)
+                    );
+                    //remove item
+                    var btnRemoveFromCart = $(".btn-remove-cart");
+
+                    btnRemoveFromCart.on("click", function () {
+                        let cartPriceUUID = $(this)
+                            .parent()
+                            .find("input[name='cart__price-uuid']")
+                            .val();
+                        if (
+                            confirm("Are you sure you don't want to delete?!")
+                        ) {
+                            $.ajax({
+                                type: "delete",
+                                url: "/cart/remove-from-cart",
+                                data: {
+                                    uuid: cartPriceUUID,
+                                    _token: $("input[name='_token']").val(),
+                                },
+                                success: function (data) {
+                                    if (data) {
+                                        getCart();
+                                    }
+                                },
+                            });
+                        }
+                    });
+
+                    $("#update__btn").on("click", () => {
+                        $.ajax({
+                            type: "PUT",
+                            url: "/cart/update-to-cart",
+                            data: {
+                                cartData: cart,
+                                _token: $("input[name='_token']").val(),
+                            },
+                            success: function (data) {
+                                if (data) {
+                                    getCart();
+                                    $("#modal-susccess").modal("show");
+                                    setTimeout(() => {
+                                        $("#modal-susccess").modal("hide");
+                                    }, 2000);
+                                }
+                            },
+                        });
+                    });
+                } else {
+                    $("#update__btn").css("display", "none");
+                    $("#cart__total-box").css("display", "none");
+                    html = `<tr><td colspan="4"><h5 class="text-center">Giỏ hàng của bạn còn trống</h5></td></tr>`;
+                    $("#cart-list").html(html);
+                }
+            },
+        });
+    }
+    getCart();
+
+    $(".add-to-cart").click(function () {
+        let product_id = $(this).data("product");
+        let product_size = $("input[name='size']:checked").val();
+        let product_color = $("input[name='color']:checked").val();
+        let product_quantity = $("#product_quantity").val();
+        let product_cover = $("#cover").val();
+        let product_price = $("#price").val();
+        let product_slug = $("#slug").val();
+        $.ajax({
+            type: "POST",
+            url: "/cart/add-to-cart",
+            data: {
+                product_id,
+                product_size,
+                product_color,
+                product_quantity,
+                product_cover,
+                product_price,
+                product_slug,
+                _token: $("input[name='_token']").val(),
+            },
+            success: function (data) {
+                if (data) {
+                    $("#modal-susccess").modal("show");
+                    getCart();
+                    setTimeout(() => {
+                        $("#modal-susccess").modal("hide");
+                    }, 2000);
+                }
+            },
+        });
     });
 })(jQuery);

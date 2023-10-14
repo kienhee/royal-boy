@@ -1,27 +1,27 @@
 @php
     $menu = [
         [
-            'name' => 'Trang chủ',
+            'name' => 'Home',
             'route' => 'client.index',
             'children' => [],
         ],
         [
-            'name' => 'Cửa hàng',
+            'name' => 'Shop',
             'route' => 'client.shop',
             'children' => [],
         ],
         [
-            'name' => 'Tin tức',
+            'name' => 'Blog',
             'route' => 'client.blog',
             'children' => [],
         ],
         [
-            'name' => 'Về chúng tôi',
+            'name' => 'About us',
             'route' => 'client.about-us',
             'children' => [],
         ],
         [
-            'name' => 'Liên hệ',
+            'name' => 'contact',
             'route' => 'client.contact',
             'children' => [],
         ],
@@ -31,7 +31,7 @@
         // 'children' => [['name' => 'Thêm mới bộ sưu tập', 'route' => 'dashboard.category.add'], ['name' => 'Danh sách bộ sưu tập', 'route' => 'dashboard.category.index']],
         // ],
     ];
-    
+
 @endphp
 <!-- Offcanvas Menu Begin -->
 {{-- <marquee behavior="scroll" direction="left">Chào mừng bạn đến với ví dụ về Marquee!</marquee> --}}
@@ -58,7 +58,7 @@
 <!-- Offcanvas Menu End -->
 
 <!-- Header Section Begin -->
-<header class="header">
+<header class="header sticky-top">
     <div class="header__top">
         <div class="container">
             <div class="row">
@@ -100,7 +100,7 @@
 
                 <li class="bag__icon"> <a href="{{ route('client.shopping-cart') }}">
                         <ion-icon name="bag-handle-outline"></ion-icon>
-                    </a><span>0</span></li>
+                    </a><span id="lengthCart">0</span></li>
 
 
 

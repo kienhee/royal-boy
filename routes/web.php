@@ -29,15 +29,18 @@ use App\Http\Controllers\Client\ClientController;
 
 Route::prefix('/')->name('client.')->group(function () {
     Route::get('/', [ClientController::class, 'home'])->name('index');
-    Route::get('/cua-hang', [ClientController::class, 'shop'])->name('shop');
-    Route::get('/cua-hang/{slug}', [ClientController::class, 'productDetail'])->name('product-detail');
-    Route::get('/ve-chung-toi', [ClientController::class, 'about'])->name('about-us');
-    Route::get('/tin-tuc', [ClientController::class, 'blog'])->name('blog');
-    Route::get('/gio-hang', [ClientController::class, 'cart'])->name('shopping-cart');
-    Route::get('/gio-hang/them-vao-gio-hang/{slug}', [ClientController::class, 'addToCart'])->name('add-to-cart');
-    Route::get('/lien-he', [ClientController::class, 'contact'])->name('contact');
+    Route::get('/shop', [ClientController::class, 'shop'])->name('shop');
+    Route::get('/shop/{slug}', [ClientController::class, 'productDetail'])->name('product-detail');
+    Route::get('/about-us', [ClientController::class, 'about'])->name('about-us');
+    Route::get('/blog', [ClientController::class, 'blog'])->name('blog');
+    Route::get('/cart', [ClientController::class, 'cart'])->name('shopping-cart');
+    Route::get('/get-cart', [ClientController::class, 'getCart'])->name('get-cart');
+    Route::post('/cart/add-to-cart', [ClientController::class, 'addToCart'])->name('add-to-cart');
+    Route::put('/cart/update-to-cart', [ClientController::class, 'updateCart'])->name('update-to-cart');
+    Route::delete('/cart/remove-from-cart', [ClientController::class, 'removeFromCart'])->name('remove-from-cart');
+    Route::get('/contact', [ClientController::class, 'contact'])->name('contact');
     Route::get('/checkout', [ClientController::class, 'checkout'])->name('checkout');
-    Route::get('/tin-tuc/{slug}', [ClientController::class, 'blogDetail'])->name('blog-detail');
+    Route::get('/blog/{slug}', [ClientController::class, 'blogDetail'])->name('blog-detail');
 });
 Route::prefix('/admin-dashboard')->name('dashboard.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, "dashboard"])->name('index');
