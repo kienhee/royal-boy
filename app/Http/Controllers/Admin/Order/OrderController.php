@@ -21,7 +21,7 @@ class OrderController extends Controller
             $status = 1;
             if ($request->status == 'pending') {
                 $status = 1;
-            } elseif ($request->status == 'complete') {
+            } elseif ($request->status == 'completed') {
                 $status = 2;
             } else {
                 $status = 3;
