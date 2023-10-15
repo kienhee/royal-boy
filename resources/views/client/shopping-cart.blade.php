@@ -91,7 +91,8 @@
                         <h6>Cart total</h6>
                         <ul>
                             <li>Total <span id="cart__total">0</span></li>
-                            <li>Ship <span>free</span></li>
+                            <li>Shipping
+ <span>free</span></li>
                         </ul>
                         <a href="{{ route('client.checkout') }}" class="primary-btn" id="btn__checkout">Proceed to
                             checkout</a>

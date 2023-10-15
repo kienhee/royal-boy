@@ -2468,6 +2468,8 @@ ol {
   margin-bottom: 6px;
 }
 
+
+
 .checkout__input p {
   color: #111111;
   margin-bottom: 12px;
@@ -2482,9 +2484,9 @@ ol {
   width: 100%;
   border: 1px solid #e1e1e1;
   font-size: 14px;
-  color: #b7b7b7;
   padding-left: 20px;
   margin-bottom: 20px;
+  font-weight: 500;
 }
 
 .checkout__input input::placeholder {

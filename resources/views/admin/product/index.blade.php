@@ -1,11 +1,11 @@
 @php
-    $moduleName = 'đơn hàng';
+    $moduleName = 'sản phẩm';
 @endphp
 @extends('layouts.admin.index')
 @section('title', 'Quản lý ' . $moduleName)
 
 @section('content')
-    <x-breadcrumb parentName="Quản lý {{ $moduleName }}" parentLink="dashboard.order.index"
+    <x-breadcrumb parentName="Quản lý {{ $moduleName }}" parentLink="dashboard.product.index"
         childrenName="Danh sách {{ $moduleName }}" />
     <div class="card">
         <x-alert />

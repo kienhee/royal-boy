@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Post;
 use App\Models\Product;
 use App\Models\Slider;
@@ -52,7 +54,7 @@ class ClientController extends Controller
     }
     public function getCart()
     {
-        // session()->forget('cart');
+
         return session('cart', []);
     }
     public function addToCart(Request $request)
@@ -129,9 +131,43 @@ class ClientController extends Controller
     {
         return view('client.checkout');
     }
-    public function order(Request $request)
+    public function placeOrder(Request $request)
     {
+        $cart = session()->get('cart', []);
+        $quantity = 0;
+        foreach ($cart as $item) {
+            $quantity += $item['quantity'];
+        }
+        if ($request->has('payment') && $request->payment == 'Payment_on_delivery') {
+            $request->payment = 1;
+        } else {
+            $request->payment = 2;
+        }
+        $data = [
+            "name" => $request->fullName, "email" => $request->email,
+            "phone" => $request->phone, "country" => $request->country,
+            "address" => $request->address, "townCity" => $request->townCity,
+            "countryState" => $request->countryState,
+            "postcodeZIP" => $request->postcodeZIP,
+            "notes" => $request->notes,
+            "total" => $request->total,
+            "quantity" => $quantity,
+            "status" => 1, "payment" => $request->payment,
+        ];
+        $order = Order::create($data);
+        if ($order) {
+            $orderDetail = [];
+            foreach ($cart as $item) {
+                $orderDetail[] = ["OrderID" => $order->id, "ProductID" => $item["id"], "size" => $item["size"], "color" => $item["color"], "quantity" => $item["quantity"], "price" => $item["price"]];
+            }
+            $orderDetail = OrderDetail::insert($orderDetail);
+            if ($orderDetail) {
+                session()->forget('cart');
+                return $orderDetail;
+            }
+        }
     }
+
     public function contact()
     {
         return view('client.contact');

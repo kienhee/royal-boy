@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('total');
             $table->integer('quantity');
             $table->string('status', 1);
+            $table->string('payment', 1);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

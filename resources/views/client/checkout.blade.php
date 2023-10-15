@@ -78,6 +78,7 @@
                                 <input type="text" id="postcodeZIP" class="mb-2">
                                 <p class="text-danger mb-3" id="postcodeZIP-err"></p>
                             </div>
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="checkout__input">
                                 <p>Order notes</p>
                                 <input type="text" placeholder="Notes about your order, e.g. special notes for delivery."
@@ -90,7 +91,9 @@
 
                                 <ul class="checkout__total__all">
                                     <li>Total <span id="cart__total">0</span></li>
-                                    <li>Ship <span>free</span></li>
+                                    <li>Shipping
+                                        <span>free</span>
+                                    </li>
                                 </ul>
                                 <h5 class="order__title">Payments</h5>
                                 <div>
@@ -99,12 +102,12 @@
                                     <label for="Payment_on_delivery">Payment on delivery</label>
                                 </div>
                                 <div>
-                                    <input type="radio" id="Online_Payment" name="Online_Payment" value="Online_Payment">
+                                    <input type="radio" id="Online_Payment" name="payment" value="Online_Payment">
                                     <label for="Online_Payment">Online Payment</label>
                                 </div>
 
 
-                                <button type="submit" class="site-btn" id="place_order">PLACE ORDER</button>
+                                <button type="button" class="site-btn" id="place_order">PLACE ORDER</button>
                             </div>
                         </div>
                     </div>
@@ -112,4 +115,17 @@
             </div>
         </div>
     </section>
+    <!-- Modal -->
+    <div class="modal fade" id="modal-susccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered ">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-center align-items-center gap-3 flex-column text-center">
+                    <img src="{{ asset('images/icon-success.png') }}" width="50" height="50" class="mb-4"
+                        alt="">
+                    <p style="font-size: 20px;">Order Success</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
 @endsection

@@ -41,6 +41,7 @@ Route::prefix('/')->name('client.')->group(function () {
     Route::delete('/cart/remove-from-cart', [ClientController::class, 'removeFromCart'])->name('remove-from-cart');
     Route::get('/contact', [ClientController::class, 'contact'])->name('contact');
     Route::get('/checkout', [ClientController::class, 'checkout'])->name('checkout');
+    Route::post('/checkout/place-order', [ClientController::class, 'placeOrder'])->name('place-order');
     Route::get('/blog/{slug}', [ClientController::class, 'blogDetail'])->name('blog-detail');
 });
 // admin
@@ -105,10 +106,8 @@ Route::prefix('/admin-dashboard')->name('dashboard.')->middleware('auth')->group
     });
     Route::prefix('orders')->name('order.')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
-        Route::get('/add', [OrderController::class, 'add'])->name('add');
-        Route::post('/add', [OrderController::class, 'store'])->name('store');
-        Route::get('/edit/{size}', [OrderController::class, 'edit'])->name('edit');
-        Route::put('/edit/{id}', [OrderController::class, 'update'])->name('update');
+        Route::get('/{id}', [OrderController::class, 'orderDetail'])->name('order-detail');
+        Route::put('/change-status', [OrderController::class, 'changeStatuOrder'])->name('order-status');
         Route::delete('/delete/{id}', [OrderController::class, 'delete'])->name('delete');
     });
     Route::prefix('tags')->name('tag.')->group(function () {

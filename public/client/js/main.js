@@ -391,6 +391,129 @@
                             },
                         });
                     });
+                    $("#place_order").click(function (event) {
+                        let fullName = $("#fullname").val();
+                        let phone = $("#phone").val();
+                        let email = $("#email").val();
+                        let country = $("#country").val();
+                        let address = $("#address").val();
+                        let townCity = $("#townCity").val();
+                        let countryState = $("#countryState").val();
+                        let postcodeZIP = $("#postcodeZIP").val();
+                        let notes = $("#notes").val();
+                        let payment = $('input[name="payment"]:checked').val();
+
+                        let fullNameErr = $("#fullname-err");
+                        let phoneErr = $("#phone-err");
+                        let emailErr = $("#email-err");
+                        let countryErr = $("#country-err");
+                        let addressErr = $("#address-err");
+                        let townCityErr = $("#townCity-err");
+                        let countryStateErr = $("#countryState-err");
+                        let postcodeZIPErr = $("#postcodeZIP-err");
+                        let validate = false;
+                        let total = cart.reduce((total, item) => {
+                            return (
+                                total + Math.round(item.quantity * item.price)
+                            );
+                        }, 0);
+                        // Kiểm tra mỗi trường
+                        if (fullName === "") {
+                            fullNameErr.text("Vui lòng nhập họ và tên.");
+                        } else {
+                            fullNameErr.css("display", "none");
+                        }
+
+                        // Kiểm tra số điện thoại theo định dạng (ví dụ: +1234567890)
+                        if (phone === "") {
+                            phoneErr.text("Số điện thoại không hợp lệ.");
+                        } else {
+                            phoneErr.css("display", "none");
+                            validate = true;
+                        }
+
+                        if (email === "" || !isValidEmail(email)) {
+                            emailErr.text(
+                                "Vui lòng nhập địa chỉ email hợp lệ."
+                            );
+                        } else {
+                            emailErr.css("display", "none");
+                            validate = true;
+                        }
+
+                        if (country === "") {
+                            countryErr.text("Vui lòng nhập quốc gia.");
+                        } else {
+                            countryErr.css("display", "none");
+                            validate = true;
+                        }
+
+                        if (address === "") {
+                            addressErr.text("Vui lòng nhập địa chỉ.");
+                        } else {
+                            addressErr.css("display", "none");
+                            validate = true;
+                        }
+
+                        if (townCity === "") {
+                            townCityErr.text(
+                                "Vui lòng nhập thị trấn hoặc thành phố."
+                            );
+                        } else {
+                            townCityErr.css("display", "none");
+                            validate = true;
+                        }
+
+                        if (countryState === "") {
+                            countryStateErr.text(
+                                "Vui lòng nhập quận hoặc tỉnh."
+                            );
+                        } else {
+                            countryStateErr.css("display", "none");
+                            validate = true;
+                        }
+
+                        if (postcodeZIP === "") {
+                            postcodeZIPErr.text(
+                                "Vui lòng nhập mã bưu điện / ZIP."
+                            );
+                        } else {
+                            postcodeZIPErr.css("display", "none");
+                            validate = true;
+                        }
+                        if (validate == false) {
+                            event.preventDefault();
+                        } else {
+                            $.ajax({
+                                type: "POST",
+                                url: "/checkout/place-order",
+                                data: {
+                                    fullName,
+                                    phone,
+                                    email,
+                                    country,
+                                    address,
+                                    townCity,
+                                    countryState,
+                                    postcodeZIP,
+                                    notes,
+                                    payment,
+                                    total,
+                                    _token: $("input[name='_token']").val(),
+                                },
+                                success: function (data) {
+                                    if (data == 1) {
+                                        $("#modal-susccess").modal("show");
+                                        getCart();
+                                        window.location = "/shop";
+                                        setTimeout(() => {
+                                            $("#modal-susccess").modal("hide");
+                                        }, 2000);
+                                    }
+                                },
+                            });
+                        }
+                    });
                 } else {
                     $("#update__btn").css("display", "none");
                     $("#cart__total-box").css("display", "none");
@@ -434,103 +557,6 @@
             },
         });
     });
-    $("#place_order").click(function (event) {
-        let fullName = $("#fullname").val();
-        let phone = $("#phone").val();
-        let email = $("#email").val();
-        let country = $("#country").val();
-        let address = $("#address").val();
-        let townCity = $("#townCity").val();
-        let countryState = $("#countryState").val();
-        let postcodeZIP = $("#postcodeZIP").val();
-        let notes = $("#notes").val();
-
-        let fullNameErr = $("#fullname-err");
-        let phoneErr = $("#phone-err");
-        let emailErr = $("#email-err");
-        let countryErr = $("#country-err");
-        let addressErr = $("#address-err");
-        let townCityErr = $("#townCity-err");
-        let countryStateErr = $("#countryState-err");
-        let postcodeZIPErr = $("#postcodeZIP-err");
-        let validate = false;
-        console.log(
-            fullName,
-            phone,
-            email,
-            country,
-            address,
-            townCity,
-            countryState,
-            postcodeZIP,
-            notes
-        );
-        // Kiểm tra mỗi trường
-        if (fullName === "") {
-            fullNameErr.text("Vui lòng nhập họ và tên.");
-        } else {
-            fullNameErr.css("display", "none");
-        }
-
-        // Kiểm tra số điện thoại theo định dạng (ví dụ: +1234567890)
-        if (!isValidPhoneNumber(phone)) {
-            phoneErr.text(
-                "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại theo định dạng +1234567890."
-            );
-        } else {
-            phoneErr.css("display", "none");
-            validate = true;
-        }
-
-        if (email === "" || !isValidEmail(email)) {
-            emailErr.text("Vui lòng nhập địa chỉ email hợp lệ.");
-        } else {
-            emailErr.css("display", "none");
-            validate = true;
-        }
-
-        if (country === "") {
-            countryErr.text("Vui lòng nhập quốc gia.");
-        } else {
-            countryErr.css("display", "none");
-            validate = true;
-        }
-
-        if (address === "") {
-            addressErr.text("Vui lòng nhập địa chỉ.");
-        } else {
-            addressErr.css("display", "none");
-            validate = true;
-        }
-
-        if (townCity === "") {
-            townCityErr.text("Vui lòng nhập thị trấn hoặc thành phố.");
-        } else {
-            townCityErr.css("display", "none");
-            validate = true;
-        }
-
-        if (countryState === "") {
-            countryStateErr.text("Vui lòng nhập quận hoặc tỉnh.");
-        } else {
-            countryStateErr.css("display", "none");
-            validate = true;
-        }
-
-        if (postcodeZIP === "") {
-            postcodeZIPErr.text("Vui lòng nhập mã bưu điện / ZIP.");
-        } else {
-            postcodeZIPErr.css("display", "none");
-            validate = true;
-        }
-        if (validate == false) {
-            event.preventDefault();
-        }
-    });
-    function isValidPhoneNumber(phone) {
-        // Kiểm tra số điện thoại theo định dạng +1234567890
-        return /^\+\d{10}$/.test(phone);
-    }
 
     function isValidEmail(email) {
         // Hàm kiểm tra tính hợp lệ của địa chỉ email, bạn có thể sử dụng biểu thức chính quy hoặc thư viện kiểm tra email.

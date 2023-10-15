@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default"
-    data-assets-path="{{ asset('admin/assets') }}/" data-template="vertical-menu-template-free">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light-style layout-menu-fixed" dir="ltr"
+    data-theme="theme-default" data-assets-path="{{ asset('admin/assets') }}/" data-template="vertical-menu-template-free">
 
 <head>
     <meta charset="utf-8" />
@@ -132,9 +132,6 @@
     <script src="{{ asset('admin/assets') }}/js/coloris.min.js"></script>
     <script src="{{ asset('admin/assets') }}/js/initTinymce.js"></script>
     <script src="{{ asset('vendor') }}/laravel-filemanager/js/stand-alone-button.js"></script>
-    <script>
-        $('#lfm').filemanager('image');
-    </script>
     <!-- Page JS -->
     <script src="{{ asset('admin/assets') }}/js/dashboards-analytics.js"></script>
     <script>
@@ -143,8 +140,7 @@
             var loadingBg = document.querySelector(".loading-bg");
             loadingBg.style.display = "none"; // Ẩn nền loading
         });
-    </script>
-    <script>
+        $('#lfm').filemanager('image');
         VirtualSelect.init({
             ele: '#select-multiple'
         });
@@ -167,8 +163,6 @@
                 '#48cae4',
             ]
         });
-    </script>
-    <script>
         let imgInp = document.getElementById('imgInp')
         let img_preview = document.getElementById('img_preview')
         imgInp.onchange = evt => {
@@ -178,6 +172,7 @@
             }
         }
     </script>
+
 </body>
 
 </html>
