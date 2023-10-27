@@ -3,18 +3,20 @@
 
 @import "base";
 @import "header";
-@import "hero";
 @import "home-page";
-@import "product";
-@import "shop";
-@import "shop-details";
 @import "footer";
 @import "breadcrumb";
-@import "about";
-@import "shopping-cart";
+@import "categories";
+@import "product";
+@import "shop";
+@import "product-details";
+@import "shop-cart";
 @import "checkout";
 @import "blog";
 @import "blog-sidebar";
 @import "blog-details";
 @import "contact";
 @import "responsive";
+.icon-notice{
+    display: none;
+}

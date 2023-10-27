@@ -2,81 +2,76 @@
     Blog
 -----------------------*/
 .blog {
-    padding-bottom: 55px;
-}
-
-.latest {
-    padding-bottom: 55px;
+    padding-top: 70px;
+    padding-bottom: 80px;
 }
 
 .blog__item {
-    margin-bottom: 45px;
-
-    &:hover {
-
-        a {
-
-            &::after {
-                width: 40px;
-                background: $primary-color;
-            }
-        }
-
-        .blog__item__text {
-            box-shadow: 0px 15px 60px rgba(67, 69, 70, 0.05);
-        }
-    }
-
+    margin-bottom: 35px;
 }
 
 .blog__item__pic {
-    height: 270px;
+    height: 240px;
+
+    &.large__item {
+        height: 540px;
+    }
 }
 
 .blog__item__text {
-    padding: 30px 30px 25px;
-    margin: 0 30px;
-    margin-top: -35px;
+    padding: 25px 20px 0 0;
+    margin-right: 30px;
     background: $white-color;
-    @include transition(all, .3s);
+    margin-top: -54px;
 
-    span {
-        color: #3d3d3d;
-        font-size: 13px;
-        display: block;
-        margin-bottom: 10px;
-
-        img {
-            margin-right: 6px;
+    h6 {
+        margin-bottom: 6px;
+        
+        a {
+            color: $heading-color;
+            font-weight: 600;
+            line-height: 21px;
         }
     }
 
-    h5 {
-        color: #0d0d0d;
-        font-weight: 700;
-        line-height: 28px;
-        margin-bottom: 10px;
-    }
+    ul {
 
-    a {
-        display: inline-block;
+        li {
+            font-size: 12px;
+            color: #888888;
+            display: inline-block;
+            list-style: none;
+            margin-right: 25px;
+            position: relative;
+
+            span {
+                color: $heading-color;
+            }
+
+            &:after {
+                position: absolute;
+                right: -17px;
+                top: 0px;
+                content: "|";
+            }
+
+            &:last-child {
+                margin-right: 0;
+
+                &:after {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+.primary-btn {
+
+    &.load-btn {
         color: $heading-color;
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        padding: 3px 0;
-        position: relative;
-
-        &:after {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 2px;
-            background: $heading-color;
-            content: "";
-            @include transition(all, .3s);
-        }
+        background: #f2f2f2;
+        padding: 12px 85px 10px;
+        border-radius: 50px;
     }
 }

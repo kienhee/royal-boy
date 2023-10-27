@@ -47,7 +47,8 @@
                                     <option value="0">danh mục gốc</option>
                                     @if (getAllCategories()->count() > 0)
                                         @foreach (menuSelect(getAllCategories()) as $category)
-                                            <option {{ old('category_id') == $category->id ? 'selected' : '' }}
+                                            <option @if (old('category_id') == $category->id) @selected(true) @endif
+                                                @if ($category->level != 0) @disabled(true) @endif
                                                 value="{{ $category->id }}">
                                                 {{ str_repeat('|--', $category->level) }}
                                                 {{ $category->name }}</option>

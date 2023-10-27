@@ -13,49 +13,63 @@
             'name' => 'Tổng quan',
             'classIcon' => 'menu-icon tf-icons bx bx-home-circle',
             'route' => 'dashboard.index',
+            'can' => 'dashboard',
             'children' => [],
         ],
-        [
-            'name' => 'Quản lý danh mục',
-            'classIcon' => 'menu-icon tf-icons bx bx-category',
-            'route' => '#',
-            'children' => [['name' => 'Thêm mới danh mục', 'route' => 'dashboard.category.add'], ['name' => 'Danh sách danh mục', 'route' => 'dashboard.category.index']],
-        ],
+        // [
+        //     'name' => 'Quản lý danh mục',
+        //     'classIcon' => 'menu-icon tf-icons bx bx-category',
+        //     'route' => '#',
+        //     'children' => [['name' => 'Thêm mới danh mục', 'route' => 'dashboard.category.add'], ['name' => 'Danh sách danh mục', 'route' => 'dashboard.category.index']],
+        // ],
         [
             'name' => 'Quản lý slider',
             'classIcon' => 'menu-icon tf-icons bx bx-slider-alt',
             'route' => '#',
+            'can' => 'slider',
             'children' => [['name' => 'Thêm mới slider', 'route' => 'dashboard.slider.add'], ['name' => 'Danh sách slider', 'route' => 'dashboard.slider.index']],
         ],
         [
             'name' => 'Quản lý sản phẩm',
             'classIcon' => 'menu-icon tf-icons bx bx-package',
             'route' => '#',
-            'children' => [['name' => 'Danh sách sản phẩm', 'route' => 'dashboard.product.index'], ['name' => 'Thêm mới sản phẩm', 'route' => 'dashboard.product.add'], ['name' => 'Bảng màu', 'route' => 'dashboard.color.index'], ['name' => 'Kích thước', 'route' => 'dashboard.size.index']],
+            'can' => 'product',
+            'children' => [['name' => 'Danh mục sản phẩm', 'route' => 'dashboard.category.index'], ['name' => 'Tất cả sản phẩm', 'route' => 'dashboard.product.index'], ['name' => 'Bảng màu', 'route' => 'dashboard.color.index'], ['name' => 'Kích thước', 'route' => 'dashboard.size.index']],
         ],
         [
             'name' => 'Đơn hàng',
             'classIcon' => 'menu-icon tf-icons bx bxs-cart-alt',
             'route' => '#',
+            'can' => 'order',
             'children' => [['name' => 'Tất cả đơn hàng', 'route' => 'dashboard.order.index']],
         ],
         [
             'name' => 'Quản lý bài viết',
             'classIcon' => 'menu-icon tf-icons bx bx-news',
             'route' => '#',
+            'can' => 'post',
             'children' => [['name' => 'Danh sách bài viết', 'route' => 'dashboard.post.index'], ['name' => 'Tags', 'route' => 'dashboard.tag.index']],
         ],
         [
             'name' => 'Quản lý nhóm',
             'classIcon' => 'menu-icon tf-icons bx bxs-group',
             'route' => '#',
+            'can' => 'group',
             'children' => [['name' => 'Thêm nhóm mới', 'route' => 'dashboard.group.add'], ['name' => 'Danh sách nhóm', 'route' => 'dashboard.group.index']],
         ],
         [
             'name' => 'Quản lý người dùng',
             'classIcon' => 'menu-icon tf-icons bx bxs-user-account',
             'route' => '#',
+            'can' => 'user',
             'children' => [['name' => 'Thêm mới thành viên', 'route' => 'dashboard.user.add'], ['name' => 'Danh sách người dùng', 'route' => 'dashboard.user.index']],
+        ],
+        [
+            'name' => 'Quản lý Media',
+            'classIcon' => 'menu-icon tf-icons bx bxs-folder-open',
+            'route' => '#',
+            'can' => 'media',
+            'children' => [['name' => 'Tất cả ', 'route' => 'dashboard.media']],
         ],
     ];
     $menuDevelopment = [
@@ -162,33 +176,35 @@
 
     <ul class="menu-inner py-1">
         @foreach ($menu as $item)
-            @if (empty($item['children']))
-                <li class="menu-item {{ url()->current() == route($item['route']) ? 'active' : '' }}">
-                    <a href="{{ url()->current() == route($item['route']) ? 'javascript:void(0)' : route($item['route']) }}"
-                        class="menu-link">
-                        <i class="{{ $item['classIcon'] }}"></i>
-                        <div data-i18n="{{ $item['name'] }}">{{ $item['name'] }}</div>
-                    </a>
-                </li>
-            @else
-                <li class="menu-item {{ isActive($item['children']) ? 'active open' : '' }} ">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="{{ $item['classIcon'] }}"></i>
-                        <div data-i18n="{{ $item['name'] }}">{{ $item['name'] }} </div>
-                    </a>
-                    <ul class="menu-sub">
-                        @foreach ($item['children'] as $children)
-                            <li class="menu-item {{ url()->current() == route($children['route']) ? 'active' : '' }}">
-                                <a href="{{ url()->current() == route($children['route']) ? 'javascript:void(0)' : route($children['route']) }}"
-                                    class="menu-link">
-                                    <div data-i18n="{{ $children['name'] }}">{{ $children['name'] }}</div>
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
+            @can($item['can'])
+                @if (empty($item['children']))
+                    <li class="menu-item {{ url()->current() == route($item['route']) ? 'active' : '' }}">
+                        <a href="{{ url()->current() == route($item['route']) ? 'javascript:void(0)' : route($item['route']) }}"
+                            class="menu-link">
+                            <i class="{{ $item['classIcon'] }}"></i>
+                            <div data-i18n="{{ $item['name'] }}">{{ $item['name'] }}</div>
+                        </a>
+                    </li>
+                @else
+                    <li class="menu-item {{ isActive($item['children']) ? 'active open' : '' }} ">
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class="{{ $item['classIcon'] }}"></i>
+                            <div data-i18n="{{ $item['name'] }}">{{ $item['name'] }} </div>
+                        </a>
+                        <ul class="menu-sub">
+                            @foreach ($item['children'] as $children)
+                                <li class="menu-item {{ url()->current() == route($children['route']) ? 'active' : '' }}">
+                                    <a href="{{ url()->current() == route($children['route']) ? 'javascript:void(0)' : route($children['route']) }}"
+                                        class="menu-link">
+                                        <div data-i18n="{{ $children['name'] }}">{{ $children['name'] }}</div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
 
-                </li>
-            @endif
+                    </li>
+                @endif
+            @endcan
         @endforeach
         {{-- Nơi dành cho routes mode development --}}
         @if (getEnv('APP_ENV') == 'local')

@@ -1,3 +1,11 @@
+/******************************************************************
+Template Name: Ashion
+Description: Ashion ecommerce template
+Author: Colorib
+Author URI: https://colorlib.com/
+Version: 1.0
+Created: Colorib
+******************************************************************/
 /*------------------------------------------------------------------
 [Table of contents]
 
@@ -8,11 +16,11 @@
 	1.4	Reset
 2.  Helper Css
 3.  Header Section
-4.  Hero Section
-5.  Banner Section
-6.  Product Section
-7.  Intagram Section
-8.  Latest Section
+4.  Categories Section
+5.  Product Section
+6.  Banner Section
+7.  Countdown Section
+8.  Instagram
 9.  Contact
 10.  Footer Style
 -------------------------------------------------------------------*/
@@ -23,7 +31,7 @@
 html,
 body {
   height: 100%;
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -36,7 +44,7 @@ h6 {
   margin: 0;
   color: #111111;
   font-weight: 400;
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 h1 {
@@ -64,11 +72,11 @@ h6 {
 }
 
 p {
-  font-size: 15px;
-  font-family: 'Nunito Sans', sans-serif;
-  color: #3d3d3d;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  color: #666666;
   font-weight: 400;
-  line-height: 25px;
+  line-height: 24px;
   margin: 0 0 15px 0;
 }
 
@@ -87,14 +95,12 @@ a:hover,
 a:focus {
   text-decoration: none;
   outline: none;
-  color: $white-color;
 }
 
 ul,
 ol {
   padding: 0;
   margin: 0;
-  list-style: none;
 }
 
 /*---------------------
@@ -102,22 +108,23 @@ ol {
 -----------------------*/
 .section-title {
   margin-bottom: 45px;
-  text-align: center;
 
-  span {
-    color: $primary-color;
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 15px;
-    display: block;
-  }
-
-  h2 {
+  h4 {
     color: $heading-color;
-    font-weight: 700;
-    line-height: 46px;
+    font-weight: 600;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+
+    &:after {
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      height: 2px;
+      width: 70px;
+      background: $primary-color;
+      content: "";
+    }
   }
 }
 
@@ -148,24 +155,24 @@ ol {
 /* buttons */
 .primary-btn {
   display: inline-block;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 14px;
   text-transform: uppercase;
-  padding: 14px 30px;
+  font-weight: 600;
+  padding: 12px 30px 10px;
   color: $white-color;
-  background: #000000;
-  letter-spacing: 4px;
+  background: $primary-color;
 }
 
 .site-btn {
   font-size: 14px;
   color: $white-color;
-  background: $heading-color;
-  font-weight: 700;
+  background: $primary-color;
+  font-weight: 600;
   border: none;
   text-transform: uppercase;
   display: inline-block;
-  padding: 14px 30px;
+  padding: 12px 30px;
+  border-radius: 50px;
 }
 
 /* Preloder */
@@ -176,7 +183,7 @@ ol {
   top: 0;
   left: 0;
   z-index: 999999;
-  background: #000;
+  background: #ffffff;
 }
 
 .loader {
@@ -260,7 +267,7 @@ ol {
   height: 100%;
   left: 0;
   top: 0;
-  background: #000;
+  background: #ffffff;
   z-index: 99999;
 }
 
@@ -272,7 +279,7 @@ ol {
   width: 500px;
   font-size: 40px;
   border: none;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid #dddddd;
   background: 0 0;
   color: #999;
 }

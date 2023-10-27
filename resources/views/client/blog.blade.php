@@ -1,48 +1,48 @@
 @extends('layouts.client.index')
+@section('title', 'Blog')
 @section('content')
-<!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-blog set-bg" data-setbg="{{ asset('client') }}/img/breadcrumb-bg.jpg">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h2>Our Blog</h2>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Breadcrumb Section End -->
-
-<!-- Blog Section Begin -->
-<section class="blog spad">
-    <div class="container">
-        <div class="row">
-            @if ($posts->count() > 0)
-            @foreach ($posts as $item)
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic set-bg" data-setbg="{{ $item->cover }}">
-                    </div>
-                    <div class="blog__item__text">
-                        <span><img src="{{ asset('client') }}/img/icon/calendar.png" alt="">
-                            {{ $item->created_at->format('d M Y') }}</span>
-                        <h5>{{ $item->title }}</h5>
-                        <a href="{{ route('client.blog-detail', $item->slug) }}">Đọc thêm</a>
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                        <span>Blog</span>
                     </div>
                 </div>
             </div>
-            @endforeach
-            @else
-            <div class="col-12">
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
 
-                <h3 class="text-center">Không tìm thấy bài viết!</h3>
-            </div>
-            @endif
-            <div class="col-12 d-flex justify-content-center">
-                {{ $posts->links() }}
+    <!-- Blog Section Begin -->
+    <section class="blog spad">
+        <div class="container">
+            <div class="row">
+                @if ($posts->count() > 0)
+                    @foreach ($posts as $post)
+                        <div class="col-lg-4 col-md-4 col-sm-6">
+                            <div class="blog__item">
+                                <div class="blog__item__pic set-bg" data-setbg="{{ $post->cover }}">
+                                </div>
+                                <div class="blog__item__text">
+                                    <h6><a href="{{ route('client.blog-detail', $post->slug) }}">{{ $post->title }}</a>
+                                    </h6>
+                                    <ul>
+                                        <li>by <span>{{ $post->user->full_name }}</span></li>
+                                        <li> {{ $post->created_at->format('M d, Y') }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+
+                <div class="col-lg-12 text-center">
+                    <a href="#" class="primary-btn load-btn">Load more posts</a>
+                </div>
             </div>
         </div>
-
-    </div>
-</section>
-<!-- Blog Section End -->
+    </section>
+    <!-- Blog Section End -->
 @endsection

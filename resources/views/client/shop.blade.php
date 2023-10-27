@@ -1,275 +1,365 @@
 @extends('layouts.client.index')
+@section('title', 'Shop')
 @section('content')
-    <section class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__text">
-                        <h4>Shop</h4>
-                        <div class="breadcrumb__links">
-                            <a href="{{ route('client.index') }}">Home</a>
-                            <span>Shop</span>
-                        </div>
-                    </div>
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                    <span>Shop</span>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Breadcrumb Section End -->
+    </div>
+</div>
+<!-- Breadcrumb End -->
 
-    <!-- Shop Section Begin -->
-    <section class="shop spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
+<!-- Shop Section Begin -->
+<section class="shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <form method="get">
                     <div class="shop__sidebar">
-                        <div class="shop__sidebar__search">
-                            <form action="#">
-                                <input type="text" placeholder="Search...">
-                                <button type="submit"><span class="icon_search"></span></button>
-                            </form>
-                        </div>
-                        <div class="shop__sidebar__accordion">
-                            <div class="accordion" id="accordionExample">
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
-                                    </div>
-                                    <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__categories">
-                                                <ul class="nice-scroll">
-                                                    <li><a href="#">Men (20)</a></li>
-                                                    <li><a href="#">Women (20)</a></li>
-                                                    <li><a href="#">Bags (20)</a></li>
-                                                    <li><a href="#">Clothing (20)</a></li>
-                                                    <li><a href="#">Shoes (20)</a></li>
-                                                    <li><a href="#">Accessories (20)</a></li>
-                                                    <li><a href="#">Kids (20)</a></li>
-                                                    <li><a href="#">Kids (20)</a></li>
-                                                    <li><a href="#">Kids (20)</a></li>
-                                                </ul>
-                                            </div>
+                        <div class="sidebar__categories">
+
+                            <div class="section-title">
+                                <h4>Categories</h4>
+                            </div>
+
+                            <div class="categories__accordion">
+                                <div class="accordion" id="accordionExample">
+                                    @foreach ($categoriesParent as $parent)
+                                    <div class="card">
+                                        <div class="card-heading active">
+                                            <a data-toggle="collapse" data-target="#collapseOne">{{ $parent->name }}</a>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__brand">
+                                        <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                                            <div class="card-body">
                                                 <ul>
-                                                    <li><a href="#">Louis Vuitton</a></li>
-                                                    <li><a href="#">Chanel</a></li>
-                                                    <li><a href="#">Hermes</a></li>
-                                                    <li><a href="#">Gucci</a></li>
+                                                    @if ($parent->categoryChildren->count())
+                                                    @foreach ($parent->categoryChildren as $children)
+                                                    <li class="category-cusor">
+                                                        <input type="radio" class="category-radio"
+                                                            @if(Request()->category == $children->id
+                                                        )@checked(true)@endif
+                                                        id="{{$children->name }}" value="{{$children->id }}"
+                                                        name="category">
+                                                        <label for="{{$children->name }}">{{$children->name }}</label>
+                                                    </li>
+                                                    @endforeach
+                                                    @endif
+
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
-                                    </div>
-                                    <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__price">
-                                                <ul>
-                                                    <li><a href="#">$0.00 - $50.00</a></li>
-                                                    <li><a href="#">$50.00 - $100.00</a></li>
-                                                    <li><a href="#">$100.00 - $150.00</a></li>
-                                                    <li><a href="#">$150.00 - $200.00</a></li>
-                                                    <li><a href="#">$200.00 - $250.00</a></li>
-                                                    <li><a href="#">250.00+</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseFour">Size</a>
-                                    </div>
-                                    <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__size">
-                                                <label for="xs">xs
-                                                    <input type="radio" id="xs">
-                                                </label>
-                                                <label for="sm">s
-                                                    <input type="radio" id="sm">
-                                                </label>
-                                                <label for="md">m
-                                                    <input type="radio" id="md">
-                                                </label>
-                                                <label for="xl">xl
-                                                    <input type="radio" id="xl">
-                                                </label>
-                                                <label for="2xl">2xl
-                                                    <input type="radio" id="2xl">
-                                                </label>
-                                                <label for="xxl">xxl
-                                                    <input type="radio" id="xxl">
-                                                </label>
-                                                <label for="3xl">3xl
-                                                    <input type="radio" id="3xl">
-                                                </label>
-                                                <label for="4xl">4xl
-                                                    <input type="radio" id="4xl">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseFive">Colors</a>
-                                    </div>
-                                    <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__color">
-                                                <label class="c-1" for="sp-1">
-                                                    <input type="radio" id="sp-1">
-                                                </label>
-                                                <label class="c-2" for="sp-2">
-                                                    <input type="radio" id="sp-2">
-                                                </label>
-                                                <label class="c-3" for="sp-3">
-                                                    <input type="radio" id="sp-3">
-                                                </label>
-                                                <label class="c-4" for="sp-4">
-                                                    <input type="radio" id="sp-4">
-                                                </label>
-                                                <label class="c-5" for="sp-5">
-                                                    <input type="radio" id="sp-5">
-                                                </label>
-                                                <label class="c-6" for="sp-6">
-                                                    <input type="radio" id="sp-6">
-                                                </label>
-                                                <label class="c-7" for="sp-7">
-                                                    <input type="radio" id="sp-7">
-                                                </label>
-                                                <label class="c-8" for="sp-8">
-                                                    <input type="radio" id="sp-8">
-                                                </label>
-                                                <label class="c-9" for="sp-9">
-                                                    <input type="radio" id="sp-9">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
-                                    </div>
-                                    <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__tags">
-                                                <a href="#">Product</a>
-                                                <a href="#">Bags</a>
-                                                <a href="#">Shoes</a>
-                                                <a href="#">Fashio</a>
-                                                <a href="#">Clothing</a>
-                                                <a href="#">Hats</a>
-                                                <a href="#">Accessories</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-9">
-                    <div class="shop__product__option">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="shop__product__option__left">
-                                    <p>Showing 1–12 of 126 results</p>
-                                </div>
+                        <div class="sidebar__sizes">
+                            <div class="section-title">
+                                <h4>Shop by price</h4>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="shop__product__option__right">
-                                    <p>Sort by Price:</p>
-                                    <select>
-                                        <option value="">Low To High</option>
-                                        <option value="">$0 - $55</option>
-                                        <option value="">$55 - $100</option>
-                                    </select>
-                                </div>
+                            <div class="size__list">
+                                <label for="lowToHight">
+                                    Low to hight
+                                    <input type="radio" id="lowToHight" name="sort" value="asc" @if(Request()->sort ==
+                                    'asc' )@checked(true)@endif>
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label for="hightToLow">
+                                    Hight to low
+                                    <input type="radio" id="hightToLow" name="sort" value="desc" @if(Request()->sort ==
+                                    'desc' )@checked(true)@endif>
+                                    <span class="checkmark"></span>
+                                </label>
+
+                            </div>
+                        </div>
+                        <div class="sidebar__sizes">
+                            <div class="section-title">
+                                <h4>Shop by size</h4>
+                            </div>
+                            <div class="size__list">
+                                @foreach ($sizes as $size)
+                                <label for="{{$size->name}}">
+                                    {{$size->name}}
+                                    <input type="radio" id="{{$size->name}}" name="size" value="{{$size->name}}"
+                                        @if(Request()->sizes == $size->name )@checked(true)@endif>
+                                    <span class="checkmark"></span>
+                                </label>
+                                @endforeach
+
+
+                            </div>
+                        </div>
+                        <div class="sidebar__color">
+                            <div class="section-title">
+                                <h4>Shop by color</h4>
+                            </div>
+                            <div class=" color__list">
+                                @foreach ($colors as $color)
+                                <label for="{{$color->name}}">
+                                    <input type="radio" class="color-checkbox" id="{{$color->name}}" name="color"
+                                        value="{{$color->name}}" @if(Request()->color == $color->name
+                                    )@checked(true)@endif>
+                                    <div class="color-bg"
+                                        style="width: 30px ; height:30px ; background: {{$color->code}};border-radius:50%;">
+                                    </div>
+                                </label>
+
+                                @endforeach
+
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        @if ($products->count() > 0)
-                            @foreach ($products as $product)
-                                <div class="col-lg-4 col-md-6 col-sm-6">
-                                    <a href="{{ route('client.product-detail', $product->slug) }}"
-                                        class="product__item sale">
-                                        <div class="product__item__pic set-bg"
-                                            data-setbg="{{ explode(',', $product->images)[0] }}"
-                                            style="background-image: url(&quot;{{ explode(',', $product->images)[0] }}&quot;);">
-                                            @if (((int) $product->sale > 0 && $product->isNew == 0) || ((int) $product->sale > 0 && $product->isNew == 1))
-                                                <span class="label">Sale {{ (int) $product->sale }}%</span> <br>
-                                            @elseif ($product->isNew == 1 && (int) $product->sale == 0)
-                                                <span class="label">New</span> <br>
-                                            @endif
+                    <button class="btn btn-danger w-100 mb-2">Filter</button>
+                    <a href="{{route('client.shop')}}" class="btn btn-outline-secondary w-100">Reset</a>
+                </form>
+            </div>
+            <div class="col-lg-9 col-md-9">
+                <div class="row">
+                    @if ($products->count() )
+                    @foreach ($products as $product)
 
-                                        </div>
-                                        <div class="product__item__text">
-                                            <a
-                                                href="{{ route('client.product-detail', $product->slug) }}">{{ $product->name }}</a>
-                                            <div class="rating">
-                                                <i class="fa fa-star-o"></i>
-                                                <i class="fa fa-star-o"></i>
-                                                <i class="fa fa-star-o"></i>
-                                                <i class="fa fa-star-o"></i>
-                                                <i class="fa fa-star-o"></i>
-                                            </div>
-
-                                            @if ((int) $product->sale > 0)
-                                                <h5 style="color: #e53637">
-                                                    {{ number_format(((100 - $product->sale) / 100) * $product->regular_price) }}đ
-                                                </h5>
-                                                <del class="text-muted ">{{ number_format($product->regular_price) }}đ
-                                                </del>
-                                            @else
-                                                <h5 style="color: #e53637">
-                                                    {{ number_format($product->regular_price) }}đ
-                                                </h5>
-                                            @endif
-
-                                        </div>
-                                    </a>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="{{explode(',',$product->images)[0]}}">
+                                <div class="label new">New</div>
+                                <ul class="product__hover">
+                                    <li><a href="{{explode(',',$product->images)[0]}}" class="image-popup"><span
+                                                class="arrow_expand"></span></a></li>
+                                    <li><a href="javascript:void(0)" onclick="addToFavourite({{$product->id}})"><span
+                                                class="icon_heart_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="{{route('client.product-detail',$product->slug)}}">{{$product->name}}</a>
+                                </h6>
+                                @if ($product->sale)
+                                <div class="product__price">{{number_format(((100 - $product->sale)/100)
+                                    *$product->price)}} đ <span>{{number_format($product->price)}} đ</span>
                                 </div>
-                            @endforeach
-                        @else
-                            <div class="col-lg-12">
-                                <h3 class="text-center">
-                                    Không có sản phẩm nào!
-                                </h3>
+                                @else
+                                <div class="product__price">{{number_format($product->price)}} đ
+                                </div>
+                                @endif
+
                             </div>
-                        @endif
-
-
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="product__pagination">
-                                <a class="active" href="#">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <span>...</span>
-                                <a href="#">21</a>
+                    @endforeach
+                    @endif
+
+                    {{-- <div class="col-lg-4 col-md-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ asset('client') }}/img/shop/shop-2.jpg">
+                                <ul class="product__hover">
+                                    <li><a href="{{ asset('client') }}/img/shop/shop-2.jpg" class="image-popup"><span
+                                                class="arrow_expand"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                </ul>
                             </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">Flowy striped skirt</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 49.0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ asset('client') }}/img/shop/shop-3.jpg">
+                                <ul class="product__hover">
+                                    <li><a href="{{ asset('client') }}/img/shop/shop-3.jpg" class="image-popup"><span
+                                                class="arrow_expand"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">Croc-effect bag</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ asset('client') }}/img/shop/shop-4.jpg">
+                                <ul class="product__hover">
+                                    <li><a href="{{ asset('client') }}/img/shop/shop-4.jpg" class="image-popup"><span
+                                                class="arrow_expand"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">Dark wash Xavi jeans</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="product__item sale">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ asset('client') }}/img/shop/shop-5.jpg">
+                                <div class="label">Sale</div>
+                                <ul class="product__hover">
+                                    <li><a href="{{ asset('client') }}/img/shop/shop-5.jpg" class="image-popup"><span
+                                                class="arrow_expand"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">Ankle-cuff sandals</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ asset('client') }}/img/shop/shop-6.jpg">
+                                <ul class="product__hover">
+                                    <li><a href="{{ asset('client') }}/img/shop/shop-6.jpg" class="image-popup"><span
+                                                class="arrow_expand"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">Contrasting sunglasses</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ asset('client') }}/img/shop/shop-7.jpg">
+                                <ul class="product__hover">
+                                    <li><a href="{{ asset('client') }}/img/shop/shop-7.jpg" class="image-popup"><span
+                                                class="arrow_expand"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">Circular pendant earrings</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ asset('client') }}/img/shop/shop-8.jpg">
+                                <div class="label stockout stockblue">Out Of Stock</div>
+                                <ul class="product__hover">
+                                    <li><a href="{{ asset('client') }}/img/shop/shop-8.jpg" class="image-popup"><span
+                                                class="arrow_expand"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">Cotton T-Shirt</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 59.0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="product__item sale">
+                            <div class="product__item__pic set-bg"
+                                data-setbg="{{ asset('client') }}/img/shop/shop-9.jpg">
+                                <div class="label">Sale</div>
+                                <ul class="product__hover">
+                                    <li><a href="{{ asset('client') }}/img/shop/shop-9.jpg" class="image-popup"><span
+                                                class="arrow_expand"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">Water resistant zips backpack</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
+                            </div>
+                        </div>
+                    </div> --}}
+                    <div class="col-lg-12 text-center">
+                        <div class="pagination__option">
+                            {{ $products->withQueryString()->links() }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+<!-- Shop Section End -->
 @endsection

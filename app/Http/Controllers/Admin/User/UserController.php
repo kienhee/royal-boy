@@ -15,7 +15,8 @@ class UserController extends Controller
         $result = User::query();
 
         if ($request->has('keywords') && $request->keywords != null) {
-            $result->where('full_name', 'like', '%' . $request->keywords . '%')
+            $result
+                ->where('full_name', 'like', '%' . $request->keywords . '%')
                 ->orWhere('email', 'like', '%' . $request->keywords . '%')
                 ->orWhere('phone_number', 'like', '%' . $request->keywords . '%');
         }
@@ -29,7 +30,7 @@ class UserController extends Controller
             $result->orderBy('created_at', 'desc');
         }
         if ($request->has('status') && $request->status != null && $request->status == 'active') {
-            $result->where('deleted_at', "=", null);
+            $result->where('deleted_at', '=', null);
         } elseif ($request->has('status') && $request->status != null && $request->status == 'inactive') {
             $result->onlyTrashed();
         } else {
@@ -43,6 +44,7 @@ class UserController extends Controller
     {
         return view('admin.user.add');
     }
+
     public function store(Request $request)
     {
         $validate = $request->validate([
@@ -53,21 +55,20 @@ class UserController extends Controller
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6'
         ], [
-            "full_name.required" => "Vui lòng nhập trường này",
-            "group_id.required" => "Vui lòng thêm nhóm quyền",
-            "phone_number.numeric" => "Vui lòng nhập đúng định dạng",
-            "phone_number.required" => "Vui lòng thêm nhóm quyền",
-            "group_id.numeric" => "Giá trị phải là số",
-            "full_name.max" => "Tối đa :max kí tự",
-            "email.required" => "Vui lòng nhập email",
-            "email.email" => "Vui lòng nhập đúng định dạng",
-            "email.unique" => "Email này đã được sử dụng",
-            "password.required" => "Vui lòng nhập mật khẩu",
-            "password.min" => "Mật khẩu phải lớn hơn hoặc bằng :min kí tự",
-            "password.confirmed" => "Xác nhận trường mật khẩu không khớp.",
-            "password_confirmation.required" => "Vui lòng xác nhận mật khẩu",
-            "password_confirmation.min" => "Mật khẩu phải lớn hơn hoặc bằng :min kí tự",
-
+            'full_name.required' => 'Vui lòng nhập trường này',
+            'group_id.required' => 'Vui lòng thêm nhóm quyền',
+            'phone_number.numeric' => 'Vui lòng nhập đúng định dạng',
+            'phone_number.required' => 'Vui lòng nhập trường này',
+            'group_id.numeric' => 'Giá trị phải là số',
+            'full_name.max' => 'Tối đa :max kí tự',
+            'email.required' => 'Vui lòng nhập email',
+            'email.email' => 'Vui lòng nhập đúng định dạng',
+            'email.unique' => 'Email này đã được sử dụng',
+            'password.required' => 'Vui lòng nhập mật khẩu',
+            'password.min' => 'Mật khẩu phải lớn hơn hoặc bằng :min kí tự',
+            'password.confirmed' => 'Xác nhận trường mật khẩu không khớp.',
+            'password_confirmation.required' => 'Vui lòng xác nhận mật khẩu',
+            'password_confirmation.min' => 'Mật khẩu phải lớn hơn hoặc bằng :min kí tự',
         ]);
         $validate['password'] = Hash::make($validate['password']);
 
@@ -78,10 +79,12 @@ class UserController extends Controller
         }
         return back()->with('msgError', 'Thêm thành viên thất bại!');
     }
+
     public function edit(User $user)
     {
         return view('admin.user.edit', compact('user'));
     }
+
     public function update(Request $request, $id)
     {
         if (Auth::user()->id != $id) {
@@ -89,27 +92,28 @@ class UserController extends Controller
         }
         $validate = $request->validate([
             'full_name' => 'required|max:50',
+            'address' => 'required',
             'group_id' => 'required|numeric',
             'phone_number' => 'required|numeric',
-            'avatar' =>  'image'
+            'avatar' => 'image'
         ], [
-            "full_name.required" => "Vui lòng nhập trường này",
-            "group_id.required" => "Vui lòng thêm nhóm quyền",
-            "phone_number.numeric" => "Vui lòng nhập đúng định dạng",
-            "phone_number.required" => "Vui lòng thêm nhóm quyền",
-            "group_id.numeric" => "Giá trị phải là số",
-            "password.required" => "Vui lòng nhập mật khẩu",
-            "password.min" => "Mật khẩu phải lớn hơn hoặc bằng :min kí tự",
-            "password.confirmed" => "Xác nhận trường mật khẩu không khớp.",
-            "password_confirmation.required" => "Vui lòng xác nhận mật khẩu",
-            "password_confirmation.min" => "Mật khẩu phải lớn hơn hoặc bằng :min kí tự",
-            "avatar.image" => "Vui lòng chọn đúng định dạng ảnh!",
-
+            'full_name.required' => 'Vui lòng nhập trường này',
+            'group_id.required' => 'Vui lòng thêm nhóm quyền',
+            'phone_number.numeric' => 'Vui lòng nhập đúng định dạng',
+            'phone_number.required' => 'Vui lòng thêm nhóm quyền',
+            'address.required' => 'Vui lòng nhập trường này',
+            'group_id.numeric' => 'Giá trị phải là số',
+            'password.required' => 'Vui lòng nhập mật khẩu',
+            'password.min' => 'Mật khẩu phải lớn hơn hoặc bằng :min kí tự',
+            'password.confirmed' => 'Xác nhận trường mật khẩu không khớp.',
+            'password_confirmation.required' => 'Vui lòng xác nhận mật khẩu',
+            'password_confirmation.min' => 'Mật khẩu phải lớn hơn hoặc bằng :min kí tự',
+            'avatar.image' => 'Vui lòng chọn đúng định dạng ảnh!',
         ]);
         if ($request->hasFile('avatar')) {
-            $path_img =  $request->file('avatar')->store('public/photos/1/profile');
+            $path_img = $request->file('avatar')->store('public/photos/1/profile');
             // Thay thế public thành storage trong chuỗi path
-            $validate['avatar'] = str_replace("public", getenv('APP_URL') . "/storage", $path_img);
+            $validate['avatar'] = str_replace('public', getenv('APP_URL') . '/storage', $path_img);
         }
         $check = User::where('id', $id)->update($validate);
         if ($check) {
@@ -117,6 +121,7 @@ class UserController extends Controller
         }
         return back()->with('msgError', 'Cập nhật thất bại!');
     }
+
     public function softDelete($id)
     {
         $check =
@@ -126,6 +131,7 @@ class UserController extends Controller
         }
         return back()->with('msgError', 'Đổi trạng thái thất bại!');
     }
+
     public function restore($id)
     {
         $check = User::onlyTrashed()->where('id', $id)->restore();
@@ -134,6 +140,7 @@ class UserController extends Controller
         }
         return back()->with('msgError', 'Khôi phục dùng thất bại!');
     }
+
     public function forceDelete($id)
     {
         if (Auth::user()->id != $id) {
@@ -145,6 +152,7 @@ class UserController extends Controller
         }
         return back()->with('msgError', 'Xóa người dùng thất bại!');
     }
+
     public function AccountSetting()
     {
         return view('admin.user.Account');

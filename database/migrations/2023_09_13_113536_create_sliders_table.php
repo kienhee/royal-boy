@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::create('sliders', function (Blueprint $table) {
             $table->increments('id');
             $table->text('image');
-            $table->string('title');
-            $table->string('description');
-            $table->integer('category_id');
             $table->softDeletes();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();

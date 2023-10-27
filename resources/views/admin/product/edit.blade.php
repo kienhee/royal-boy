@@ -91,26 +91,6 @@
                                 @enderror
                             </div>
                             <div class="mb-3 col-md-6">
-                                <label for="product_code" class="form-label">Mã sản phẩm: </label>
-                                <input class="form-control @error('product_code') is-invalid @enderror " type="text"
-                                    id="product_code" name="product_code"
-                                    value="{{ $product->product_code ?? old('product_code') }}"
-                                    placeholder="Mã sản phẩm" />
-                                @error('product_code')
-                                    <p class="text-danger my-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div class="mb-3 col-md-6">
-                                <label for="product_sku" class="form-label">Mã SKU:</label>
-                                <input class="form-control @error('product_sku') is-invalid @enderror " type="text"
-                                    id="product_sku" name="product_sku"
-                                    value="{{ $product->product_sku ?? old('product_sku') }}" placeholder="Mã SKU" />
-                                @error('product_sku')
-                                    <p class="text-danger my-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                            <div class="mb-3 col-md-6">
                                 <label for="quantity" class="form-label">Số lượng: <span
                                         class="text-danger">*</span></label>
                                 <input class="form-control @error('quantity') is-invalid @enderror " type="text"
@@ -122,17 +102,16 @@
                             </div>
 
                             <div class="mb-3 col-md-6">
-                                <label for="category_id" class="form-label">bộ sưu tập: <span
+                                <label for="category_id" class="form-label">Danh mục: <span
                                         class="text-danger">*</span></label>
                                 <select class="form-select @error('category_id') is-invalid @enderror" name="category_id"
                                     id="category_id">
                                     <option value="">Vui lòng lựa chọn</option>
                                     @if (getAllCategories()->count() > 0)
                                         @foreach (menuSelect(getAllCategories()) as $category)
-                                            <option
-                                                {{ $product->category_id == $category->id || old('category_id') == $category->id ? 'selected' : '' }}
-                                                value="{{ $category->id }}"
-                                                @if ($category->category_id == 0) @disabled(true) @endif>
+                                            <option @if ($product->category_id == $category->id || old('category_id') == $category->id) @selected(true) @endif
+                                                @if ($category->level == 0) @disabled(true) @endif
+                                                value="{{ $category->id }}">
                                                 {{ str_repeat('|---', $category->level) }}
                                                 {{ $category->name }} </option>
                                         @endforeach
@@ -207,16 +186,15 @@
                             </div>
 
                             <div class="mb-3 col-md-6">
-                                <label for="regular_price" class="form-label">Giá thường ("Giá bán công khai"): <span
+                                <label for="price" class="form-label">Giá bán: <span
                                         class="text-danger">*</span></label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text">$</span>
-                                    <input type="text" name="regular_price"
-                                        value="{{ $product->regular_price ?? old('regular_price') }}"
+                                    <input type="text" name="price" value="{{ $product->price ?? old('price') }}"
                                         class="form-control" placeholder="0.000">
                                     <span class="input-group-text">VND</span>
                                 </div>
-                                @error('regular_price')
+                                @error('price')
                                     <p class="text-danger my-1">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -231,22 +209,6 @@
                                     <p class="text-danger my-1">{{ $message }}</p>
                                 @enderror
                             </div>
-                            <div class="form-check form-switch mb-3 ms-3 col-md-6">
-                                <input class="form-check-input" type="checkbox" name="is_Price_includes_taxes"
-                                    id="is_Price_includes_taxes">
-                                <label class="form-check-label" for="is_Price_includes_taxes">Giá đã bao gồm thuế</label>
-                            </div>
-                            <div class="mb-3 col-md-12 " id="tax">
-                                <label for="tax" class="form-label">Thuế (%):</label>
-                                <div class="input-group input-group-merge">
-                                    <span class="input-group-text">%</span>
-                                    <input type="text" name="tax" class="form-control"
-                                        value="{{ $product->tax ?? old('tax') }}" placeholder="0.00">
-                                </div>
-                                @error('tax')
-                                    <p class="text-danger my-1">{{ $message }}</p>
-                                @enderror
-                            </div>
                         </div>
                         <div class="mt-2">
                             <button type="submit" class="btn btn-primary me-2">Cập nhật {{ $moduleName }}</button>
@@ -258,17 +220,5 @@
         </div>
     </div>
 
-    <script>
-        const checkbox = document.getElementById('is_Price_includes_taxes')
-        const input_tax = document.getElementById('tax');
-        checkbox.addEventListener('change', (event) => {
-            if (event.currentTarget.checked) {
-                input_tax.classList.add("d-none");
-            } else {
-                input_tax.classList.remove("d-none");
-
-            }
-        })
-    </script>
 
 @endsection

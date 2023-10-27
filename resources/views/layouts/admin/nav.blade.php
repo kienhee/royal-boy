@@ -12,9 +12,7 @@
         <!-- Search -->
         <div class="navbar-nav align-items-center">
             <div class="nav-item d-flex align-items-center">
-                <i class="bx bx-search fs-4 lh-0"></i>
-                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
-                    aria-label="Search..." />
+
             </div>
         </div>
         <!-- /Search -->
@@ -27,7 +25,7 @@
 
                         <div class="flex-grow-1 me-3">
                             <span class="fw-semibold d-block">{{ Auth::user()->full_name }}</span>
-                            <small class="text-muted  text-right">Admin</small>
+                            <small class="text-muted  text-right">{{ Auth::user()->group->name }}</small>
                         </div>
                         <div class="flex-shrink-0 ">
                             <div class="avatar avatar-online">
@@ -65,22 +63,6 @@
                             href="{{ url()->current() == route('dashboard.user.account-setting') ? 'javascript:void(0)' : route('dashboard.user.account-setting') }}">
                             <i class="bx bx-user me-2"></i>
                             <span class="align-middle">Thông tin cá nhân</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            <i class="bx bx-cog me-2"></i>
-                            <span class="align-middle">Settings</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            <span class="d-flex align-items-center align-middle">
-                                <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                <span class="flex-grow-1 align-middle">Billing</span>
-                                <span
-                                    class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                            </span>
                         </a>
                     </li>
                     <li>

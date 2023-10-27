@@ -29,6 +29,9 @@
                                 </label>
                                 <p class="text-muted mb-0">Được phép JPG, PNG.</p>
                             </div>
+                            @error('avatar')
+                                <p class="text-danger my-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                     </div>
@@ -42,6 +45,9 @@
                                         class="text-danger">*</span></label>
                                 <input class="form-control" type="text" id="full_name" name="full_name"
                                     value="{{ $user->full_name }}" />
+                                @error('full_name')
+                                    <p class="text-danger my-1">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="" class="form-label">E-mail: </label>
@@ -49,6 +55,23 @@
                                     value="{{ $user->email }}" />
                             </div>
                             <div class="mb-3 col-md-6">
+                                <label class="form-label" for="phone_number">Số điện thoại: <span
+                                        class="text-danger">*</span></label>
+                                <input class="form-control" type="text" id="phone_number" name="phone_number"
+                                    value="{{ $user->phone_number }}" />
+                                @error('phone_number')
+                                    <p class="text-danger my-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label class="form-label" for="address">Địa chỉ: <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" id="address" name="address"
+                                    value="{{ $user->address }}" />
+                                @error('address')
+                                    <p class="text-danger my-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="mb-3 col-md-12">
                                 <label for="group" class="form-label">Nhóm người dùng: <span
                                         class="text-danger">*</span></label>
                                 <select class="form-select" name="group_id" id="group">
@@ -61,12 +84,7 @@
 
                                 </select>
                             </div>
-                            <div class="mb-3 col-md-6">
-                                <label class="form-label" for="phone_number">Số điện thoại: <span
-                                        class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="phone_number" name="phone_number"
-                                    value="{{ $user->phone_number }}" />
-                            </div>
+
                         </div>
                         <div class="mt-2">
                             <button type="submit" class="btn btn-primary me-2">Cập nhật {{ $moduleName }}</button>
@@ -79,10 +97,10 @@
     </div>
     </div>
     <script>
-        let imgInp = document.getElementById('upload');
+        let imgInput = document.getElementById('upload');
         let preview = document.getElementById('uploadedAvatar');
-        imgInp.onchange = evt => {
-            const [file] = imgInp.files
+        imgInput.onchange = evt => {
+            const [file] = imgInput.files
             if (file) {
                 preview.src = URL.createObjectURL(file)
             }

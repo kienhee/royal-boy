@@ -51,8 +51,8 @@
 
                                     @if (getAllCategories()->count() > 0)
                                         @foreach (menuSelect(getAllCategories()) as $item)
-                                            <option
-                                                {{ $category->category_id == $item->id || old('category_id') == $item->id ? 'selected' : '' }}
+                                            <option @if ($category->category_id == $item->id || old('category_id') == $item->id) @selected(true) @endif
+                                                @if ($item->level != 0) @disabled(true) @endif
                                                 value="{{ $item->id }}">
                                                 {{ str_repeat('|--', $item->level) }}
                                                 {{ $item->name }}</option>
