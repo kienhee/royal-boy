@@ -32,8 +32,8 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
+                        <tbody id="cart">
+                            {{-- <tr>
                                 <td class="cart__product__item">
                                     <img src="{{asset('client')}}/img/shop-cart/cp-1.jpg" alt="">
                                     <div class="cart__product__item__title">
@@ -45,7 +45,7 @@
                                         </p>
                                     </div>
                                 </td>
-                                <td class="cart__price">$ 150.0</td>
+                                <td class="cart__price">$ 150.0 <del class="text-secondary">100</del></td>
                                 <td class="cart__quantity">
                                     <div class="pro-qty">
                                         <input type="text" value="1">
@@ -53,8 +53,8 @@
                                 </td>
                                 <td class="cart__total">$ 300.0</td>
                                 <td class="cart__close"><span class="icon_close"></span></td>
-                            </tr>
-                            <tr>
+                            </tr> --}}
+                            {{-- <tr>
                                 <td class="cart__product__item">
                                     <img src="{{asset('client')}}/img/shop-cart/cp-2.jpg" alt="">
                                     <div class="cart__product__item__title">
@@ -116,7 +116,8 @@
                                 </td>
                                 <td class="cart__total">$ 110.0</td>
                                 <td class="cart__close"><span class="icon_close"></span></td>
-                            </tr>
+                            </tr> --}}
+
                         </tbody>
                     </table>
                 </div>
@@ -125,12 +126,12 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="cart__btn">
-                    <a href="#">Continue Shopping</a>
+                    <a href="/shop">Continue Shopping</a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="cart__btn update__btn">
-                    <a href="#"><span class="icon_loading"></span> Update cart</a>
+                    <a href="javascript:void(0)" id="update_cart"><span class="icon_loading"></span> Update cart</a>
                 </div>
             </div>
         </div>
@@ -145,13 +146,13 @@
                 </div>
             </div>
             <div class="col-lg-4 offset-lg-2">
-                <div class="cart__total__procced">
+                <div class="cart__total__procced" id="process_to_checkout">
                     <h6>Cart total</h6>
                     <ul>
-                        <li>Subtotal <span>$ 750.0</span></li>
-                        <li>Total <span>$ 750.0</span></li>
+                        <li>Shipping <span>Free</span></li>
+                        <li>Total <span id="cart_total"></span></li>
                     </ul>
-                    <a href="#" class="primary-btn">Proceed to checkout</a>
+                    <a href="{{route('client.checkout')}}" class="primary-btn text-white">Proceed to checkout</a>
                 </div>
             </div>
         </div>

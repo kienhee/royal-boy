@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,8 +12,8 @@ return new class extends Migration
     {
         Schema::create('order_details', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('OrderID');
-            $table->integer('ProductID');
+            $table->integer('orderID');
+            $table->integer('productID');
             $table->string('size');
             $table->string('color');
             $table->integer('quantity');

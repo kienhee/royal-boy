@@ -32,6 +32,7 @@ body {
   height: 100%;
   font-family: "Montserrat", sans-serif;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
 h1,
@@ -1567,7 +1568,7 @@ ol {
   margin-right: 15px;
 }
 
-.pro-qty {
+.pro-qty, .pro-qtity {
   height: 50px;
   width: 150px;
   border: 1px solid #ebebeb;
@@ -1576,7 +1577,7 @@ ol {
   overflow: hidden;
   display: inline-block;
 }
-.pro-qty .qtybtn {
+.pro-qty .qtybtn, .pro-qtity .qtybtn {
   font-size: 14px;
   color: #666666;
   cursor: pointer;
@@ -1584,7 +1585,7 @@ ol {
   width: 12px;
   line-height: 46px;
 }
-.pro-qty input {
+.pro-qty input, .pro-qtity input {
   font-size: 14px;
   color: #666666;
   font-weight: 500;
@@ -1849,6 +1850,10 @@ ol {
 .shop-cart {
   padding-top: 70px;
   padding-bottom: 90px;
+}
+
+#update_cart, #process_to_checkout {
+  display: none;
 }
 
 .shop__cart__table {

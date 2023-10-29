@@ -14,17 +14,21 @@ class OrderController extends Controller
         $result = Order::query();
 
         if ($request->has('keywords') && $request->keywords != null) {
-            $result->where('name', 'like', '%' . $request->keywords . '%')
-                ->orWhere('email', 'like', '%' . $request->keywords . '%')->orWhere('phone', 'like', '%' . $request->keywords . '%');
+            $result
+                ->where('name', 'like', '%' . $request->keywords . '%')
+                ->orWhere('email', 'like', '%' . $request->keywords . '%')
+                ->orWhere('phone', 'like', '%' . $request->keywords . '%');
         }
         if ($request->has('status') && $request->status != null) {
             $status = 1;
             if ($request->status == 'pending') {
                 $status = 1;
-            } elseif ($request->status == 'completed') {
+            } elseif ($request->status == 'confirm') {
                 $status = 2;
-            } else {
+            } elseif ($request->status == 'completed') {
                 $status = 3;
+            } else {
+                $status = 4;
             }
             $result->where('status', '=', $status);
         }
@@ -37,26 +41,35 @@ class OrderController extends Controller
         $orders = $result->paginate(20);
         return view('admin.order.index', compact('orders'));
     }
+
     public function orderDetail($id)
     {
-        $customerInfo = Order::where("id", $id)->first();
+        $customerInfo = Order::where('id', $id)->first();
         $products = OrderDetail::where('OrderID', $id)->get();
-
 
         return view('admin.order.detail', compact('products', 'customerInfo'));
     }
+
     public function changeStatuOrder(Request $request)
     {
         if ($request->has('orderId') && $request->has('status')) {
-
             return Order::where('id', $request->orderId)->update(['status' => $request->status]);
         } else {
             return false;
         }
     }
+
+    public function confirmOrder(Request $request)
+    {
+        $check = Order::where('id', $request->id)->update(['status' => 2]);
+        if ($check) {
+            return back()->with('msgSuccess', 'Cập nhật thành công');
+        }
+        return back()->with('msgError', 'Cập nhật thất bại!');
+    }
+
     public function delete($id)
     {
-
         $deleteOrder =
             Order::destroy($id);
         if ($deleteOrder) {

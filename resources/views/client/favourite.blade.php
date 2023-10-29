@@ -14,7 +14,6 @@
                     <li class="active" data-filter="*">All</li>
                     @foreach (getAllCategories() as $category)
                     @if ($category->category_id !=0)
-
                     <li data-filter=".{{$category->slug}}">{{$category->name}}</li>
                     @endif
                     @endforeach
@@ -23,8 +22,6 @@
             </div>
         </div>
         <div class="row property__gallery" id="property__gallery">
-            
-
         </div>
     </div>
 </section>

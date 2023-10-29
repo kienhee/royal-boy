@@ -38,14 +38,14 @@ Route::prefix('/')->name('client.')->group(function () {
     Route::get('/get-favourite', [ClientController::class, 'getFavourite'])->middleware('auth.client')->name('get-favourite');
     Route::post('/add-to-favourite', [ClientController::class, 'addProductToFavourite'])->middleware('auth.client')->name('add-to-favourite');
     Route::delete('/remove-from-favourite', [ClientController::class, 'removeProductFromFavourite'])->middleware('auth.client')->name('remove-from-favourite');
-    Route::get('/cart', [ClientController::class, 'cart'])->name('shop-cart');
-    Route::get('/get-cart', [ClientController::class, 'getCart'])->name('get-cart');
-    Route::post('/add-to-cart', [ClientController::class, 'addToCart'])->name('add-to-cart');
-    Route::put('/update-to-cart', [ClientController::class, 'updateCart'])->name('update-to-cart');
-    Route::delete('/remove-from-cart', [ClientController::class, 'removeFromCart'])->name('remove-from-cart');
+    Route::get('/cart', [ClientController::class, 'cart'])->middleware('auth.client')->name('shop-cart');
+    Route::get('/get-cart', [ClientController::class, 'getCart'])->middleware('auth.client')->name('get-cart');
+    Route::post('/add-to-cart', [ClientController::class, 'addToCart'])->middleware('auth.client')->name('add-to-cart');
+    Route::delete('/remove-from-cart', [ClientController::class, 'removeFromCart'])->middleware('auth.client')->name('remove-from-cart');
+    Route::put('/update-cart', [ClientController::class, 'updateCart'])->middleware('auth.client')->name('update-cart');
 
-    Route::get('/checkout', [ClientController::class, 'checkout'])->name('checkout');
-    Route::post('/checkout/place-order', [ClientController::class, 'placeOrder'])->name('place-order');
+    Route::get('/checkout', [ClientController::class, 'checkout'])->middleware('auth.client')->name('checkout');
+    Route::post('/place-order', [ClientController::class, 'placeOrder'])->middleware('auth.client')->name('place-order');
     Route::get('/blog/{slug}', [ClientController::class, 'blogDetail'])->name('blog-detail');
     Route::get('/login', [ClientController::class, 'login'])->name('login');
     Route::post('/login', [ClientController::class, 'handleLogin'])->name('handleLogin');
@@ -115,6 +115,7 @@ Route::prefix('/dashboard')->name('dashboard.')->middleware('auth', 'can:admin')
     Route::prefix('orders')->name('order.')->middleware('can:order')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('index');
         Route::get('/{id}', [OrderController::class, 'orderDetail'])->name('order-detail');
+        Route::put('/{id}', [OrderController::class, 'confirmOrder'])->name('confirm-order');
         Route::put('/change-status', [OrderController::class, 'changeStatuOrder'])->name('order-status');
         Route::delete('/delete/{id}', [OrderController::class, 'delete'])->name('delete');
     });

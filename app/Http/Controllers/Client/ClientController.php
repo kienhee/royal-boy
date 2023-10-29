@@ -102,10 +102,7 @@ class ClientController extends Controller
     public function removeProductFromFavourite(Request $request)
     {
         if ($request->has('id')) {
-            $product = Favourite::where('productID', $request->id)->first();
-            if ($product->userID == Auth::user()->id) {
-                return Favourite::where('productID', $request->id)->delete();
-            }
+            return Favourite::where('productID', $request->id)->where('userID', Auth::user()->id)->delete();
         }
         return false;
     }
@@ -134,7 +131,11 @@ class ClientController extends Controller
 
     public function getCart()
     {
-        return Cart::where('userID', Auth::user()->id)->get();
+        $cart = Cart::where('userID', Auth::user()->id)->get();
+        foreach ($cart as $item) {
+            $item['product'] = $item->product;
+        }
+        return $cart;
     }
 
     public function addToCart(Request $request)
@@ -152,7 +153,7 @@ class ClientController extends Controller
             ->first();
 
         if ($checkProductInCart) {
-            return Cart::where('id', $checkProductInCart->id)->update(['quantity' => $checkProductInCart->quantity + $request->quantity]);
+            return Cart::where('id', $checkProductInCart->id)->where('userID', Auth::user()->id)->update(['quantity' => $checkProductInCart->quantity + $request->quantity]);
         } else {
             return Cart::insert(['userID' => Auth::id(),
                 'productID' => $request->productID, 'size' => $request->size, 'color' => $request->color, 'quantity' => $request->quantity]);
@@ -161,72 +162,101 @@ class ClientController extends Controller
 
     public function removeFromCart(Request $request)
     {
-        $cart = session()->get('cart', []);
-
-        // Tìm sản phẩm cần xóa trong giỏ hàng
-        foreach ($cart as $key => $item) {
-            if (
-                $item['uuid'] == $request->uuid
-            ) {
-                // Xóa sản phẩm khỏi giỏ hàng
-                unset($cart[$key]);
-                break;  // Thoát khỏi vòng lặp sau khi xóa sản phẩm
-            }
-        }
-
-        // Cập nhật lại giỏ hàng trong session
-        session()->put('cart', $cart);
-        return $cart;
+        return Cart::where('id', $request->id)->where('userID', Auth::user()->id)->delete();
     }
 
     public function updateCart(Request $request)
     {
-        session()->put('cart', $request->cartData);
-        return $request->cartData;
+        if ($request->has('cart')) {
+            foreach ($request->cart as $item) {
+                Cart::where('id', $item['id'])->where('userID', Auth::id())->where('productID', $item['productID'])->update(['quantity' => $item['quantity']]);
+            }
+            return true;
+        }
+    }
+
+    public function cartTotal()
+    {
+        $total = 0;
+        $cart = Cart::where('userID', Auth::user()->id)->get();
+        foreach ($cart as $item) {
+            if ($item->product->sale > 0) {
+                $total += (((100 - $item->product->sale) / 100) * $item->product->price) * $item->quantity;
+            } else {
+                $total += $item->quantity * $item->product->price;
+            }
+        }
+        return $total;
     }
 
     public function checkout()
     {
-        return view('client.checkout');
+        $total = $this->cartTotal();
+        if ($total == 0) {
+            return back();
+        }
+        $total = number_format($total);
+        return view('client.checkout', compact('total'));
     }
 
     public function placeOrder(Request $request)
     {
-        $cart = session()->get('cart', []);
+        $cart_total = $this->cartTotal();
+        $data = $request->validate([
+            'full_name' => 'required|max:50',
+            'address' => 'required',
+            'email' => 'required|email',
+            'phone_number' => 'required|numeric',
+        ], [
+            'full_name.required' => 'Vui lòng nhập trường này',
+            'phone_number.numeric' => 'Vui lòng nhập đúng định dạng',
+            'phone_number.required' => 'Vui lòng nhập trường này',
+            'address.required' => 'Vui lòng nhập trường này',
+            'email.required' => 'Vui lòng nhập email',
+            'email.email' => 'Vui lòng nhập đúng định dạng',
+        ]);
+        $data['notes'] = $request->notes;
+
+        $cart = Cart::where('userID', Auth::user()->id)->get();
+
         $quantity = 0;
         foreach ($cart as $item) {
             $quantity += $item['quantity'];
         }
-        if ($request->has('payment') && $request->payment == 'Payment_on_delivery') {
-            $request->payment = 1;
-        } else {
-            $request->payment = 2;
-        }
+
         $data = [
-            'name' => $request->fullName,
+            'userID' => Auth::user()->id,
+            'name' => $request->full_name,
             'email' => $request->email,
-            'phone' => $request->phone,
-            'country' => $request->country,
+            'phone' => $request->phone_number,
             'address' => $request->address,
-            'townCity' => $request->townCity,
-            'countryState' => $request->countryState,
-            'postcodeZIP' => $request->postcodeZIP,
             'notes' => $request->notes,
-            'total' => $request->total,
+            'total' => $cart_total,
             'quantity' => $quantity,
             'status' => 1,
-            'payment' => $request->payment,
+            'payment' => 1,
         ];
         $order = Order::create($data);
         if ($order) {
             $orderDetail = [];
             foreach ($cart as $item) {
-                $orderDetail[] = ['OrderID' => $order->id, 'ProductID' => $item['id'], 'size' => $item['size'], 'color' => $item['color'], 'quantity' => $item['quantity'], 'price' => $item['price']];
+                if ($item->product->sale > 0) {
+                    $price = ((100 - $item->product->sale) / 100) * $item->product->price;
+                } else {
+                    $price = $item->product->price;
+                }
+                $orderDetail[] = ['orderID' => $order->id,
+                    'productID' => $item->productID,
+                    'size' => $item->size,
+                    'color' => $item->color,
+                    'quantity' => $item->quantity, 'price' => $price];
             }
             $orderDetail = OrderDetail::insert($orderDetail);
             if ($orderDetail) {
-                session()->forget('cart');
-                return $orderDetail;
+                foreach ($cart as $item) {
+                    Cart::where('id', $item->id)->delete();
+                }
+                return true;
             }
         }
     }
@@ -256,7 +286,7 @@ class ClientController extends Controller
         ]);
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
-            return redirect()->route('client.shop');
+            return redirect()->route('client.index');
         }
 
         return back()->withErrors([

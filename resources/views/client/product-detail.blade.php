@@ -66,7 +66,7 @@
                     <div class="product__details__button">
                         <div class="quantity">
                             <span>Quantity:</span>
-                            <div class="pro-qty">
+                            <div class="pro-qtity">
                                 <input type="text" name="quantity" value="1">
                             </div>
                         </div>
